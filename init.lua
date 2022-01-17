@@ -140,6 +140,8 @@ require 'indent_blankline'.setup()
 
 treeinit = ftaction('NvimTree', 'IndentBlanklineDisable')
 autocmd('BufWinEnter', '*', luacall('treeinit'))
+troubleinit = ftaction('Trouble', 'IndentBlanklineDisable')
+autocmd('BufWinEnter', '*', luacall('troubleinit'))
 
 -- Telescope:
 require 'telescope'.setup {

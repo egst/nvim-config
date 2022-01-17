@@ -152,3 +152,10 @@ nnoremap('<Leader>ga', ':Git add --all<Cr>', true)
 nnoremap('<Leader>gs', ':Git status<Cr>',    true)
 nnoremap('<Leader>gc', ':Git commit -m ',    true) -- TODO: Fix silent.
 nnoremap('<Leader>gp', ':Git push<Cr>',      true)
+
+nnoremap('<Leader>ee', ':TroubleToggle<cr>')
+nnoremap('<Leader>ew', ':TroubleToggle workspace_diagnostics<cr>')
+nnoremap('<Leader>ed', ':TroubleToggle document_diagnostics<cr>')
+nnoremap('<Leader>eq', ':TroubleToggle quickfix<cr>')
+nnoremap('<Leader>el', ':TroubleToggle loclist<cr>')
+nnoremap('<Leader>er', ':TroubleToggle lsp_references<cr>')
