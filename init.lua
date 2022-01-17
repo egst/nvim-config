@@ -97,7 +97,7 @@ vim.opt.mouse          = 'a'
 vim.opt.ttimeoutlen    = 0
 vim.opt.conceallevel   = 3
 vim.opt.number         = true
-vim.opt.undodir        = '~/.vim/undodir'
+vim.opt.undodir        = vim.env.HOME .. '/.vim/undodir'
 vim.opt.undofile       = true
 
 vim.cmd 'syntax on'

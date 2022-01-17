@@ -1,29 +1,32 @@
-function map (mode, keys, command, remap)
-    vim.api.nvim_set_keymap(mode, keys, command, {noremap = not remap, silent = true})
+function map (mode, keys, command, options)
+    options = options or {}
+    options = {noremap = not options.remap, silent = not options.verbose}
+    print(options.silent)
+    vim.api.nvim_set_keymap(mode, keys, command, options)
 end
 
-function nmap (keys, command)
-    map('n', keys, command, true)
+function nmap (keys, command, verbose)
+    map('n', keys, command, {remap = true, verbose = verbose})
 end
 
-function imap (keys, command)
-    map('i', keys, command, true)
+function imap (keys, command, verbose)
+    map('i', keys, command, {remap = true, verbose = verbose})
 end
 
-function xmap (keys, command)
-    map('x', keys, command, true)
+function xmap (keys, command, verbose)
+    map('x', keys, command, {remap = true, verbose = verbose})
 end
 
-function nnoremap (keys, command)
-    map('n', keys, command, false)
+function nnoremap (keys, command, verbose)
+    map('n', keys, command, {remap = false, verbose = verbose})
 end
 
-function inoremap (keys, command)
-    map('i', keys, command, false)
+function inoremap (keys, command, verbose)
+    map('i', keys, command, {remap = false, verbose = verbose})
 end
 
-function xnoremap (keys, command)
-    map('x', keys, command, false)
+function xnoremap (keys, command, verbose)
+    map('x', keys, command, {remap = false, verbose = verbose})
 end
 
 function snippet (keys, command)
