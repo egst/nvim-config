@@ -1,0 +1,21 @@
+{
+    "languageserver": {
+        "psalmls": {
+            //"command": "./vendor/bin/psalm-language-server",
+            //"command": "./vendor/bin/psalm",
+            //"command": "/home/egst/.config/composer/vendor/bin/psalm-language-server",
+            "command": "/home/egst/.config/composer/vendor/bin/psalm",
+
+            //"args": ["--output-format=emacs", "--no-progress"],
+            //"trace.server": "verbose",
+
+            "args": ["--language-server"],
+            "filetypes": ["php"],
+            "rootPatterns": ["psalm.xml", "psalm.xml.dist"],
+            "requireRootPattern": true
+        }
+    },
+    "intelephense.diagnostics.undefinedMethods": false,
+    "intelephense.diagnostics.typeErrors": false,
+    "clangd.path": "/home/egst/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/clangd"
+}
