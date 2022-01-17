@@ -149,5 +149,6 @@ nnoremap('<Leader>tr', ':NvimTreeRefresh<Cr>')
 nnoremap('<Leader>tf', ':NvimTreeFindFile<Cr>')
 -- Git (fugitive):
 nnoremap('<Leader>ga', ':Git add --all<Cr>', true)
-nnoremap('<Leader>gc', ':Git commit -m ',    true)
-nnoremap('<Leader>gp', ':Git push',          true)
+nnoremap('<Leader>gs', ':Git status<Cr>',    true)
+nnoremap('<Leader>gc', ':Git commit -m ',    true) -- TODO: Fix silent.
+nnoremap('<Leader>gp', ':Git push<Cr>',      true)

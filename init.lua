@@ -8,7 +8,7 @@ TODOs:
 * Setup Vista or find an alternative. What about ctags?
 * Fix Goyo + NvimTree width issues.
 
-]==]
+--]==]
 
 require 'helpers'
 require 'plugins'
@@ -34,40 +34,48 @@ local langservers = {
 }
 local icons = {
     diagnostics = { -- Native LSP
-        error = "擀",
-        warn  = "㘚",
-        hint  = "⻌",
-        info  = " ",
+        error = "﮻ ",
+        warn  = " ",
+        hint  = "ﯦ ",
+        info  = " ",
     },
     trouble = { -- Trouble plugin.
-        error       = "擀",
-        warning     = "㘚",
-        hint        = "⻌",
-        information = " ",
-        other       = "﫠",
+        error       = "﮻ ",
+        warning     = " ",
+        hint        = "ﯦ ",
+        information = " ",
+        other       = " ",
     },
     completion = { -- Native LSP
-        class        = "㕡 ",
-        color        = "凇 ",
-        constant     = "沜 ",
-        constructor  = "汹 ",
-        enum         = "了 ",
-        enumMember   = " ",
-        field        = "嵈 ",
-        file         = " ",
-        folder       = " ",
-        ['function'] = " ",
-        interface    = "ﰮ ",
-        keyword      = " ",
-        method       = " ",
-        module       = " ",
-        property     = " ",
-        snippet      = "﬌ ",
-        struct       = " ",
-        text         = " ",
-        unit         = "撴 ",
-        value        = " ",
-        variable     = "衮 ",
+        class         = " ",
+        color         = " ",
+        constant      = " ",
+        constructor   = " ",
+        enum          = " ",
+        enumMember    = " ",
+        field         = " ",
+        file          = " ",
+        folder        = " ",
+        ['function']  = " ",
+        interface     = " ",
+        keyword       = " ",
+        method        = " ",
+        module        = " ",
+        property      = "ﰉ ",
+        snippet       = " ",
+        struct        = " ",
+        text          = " ",
+        unit          = " ",
+        value         = " ",
+        variable      = "ﰊ ",
+        reference     = " ",
+        event         = " ",
+        operator      = " ",
+        typeparameter = " ",
+    },
+    source = {
+        nvim_lsp = 'λ ',
+        buffer   = ' ',
     }
 }
 
@@ -221,7 +229,14 @@ cmp.setup {
         {name = 'snippy'},
     }, {
         {name = 'buffer'},
-    })
+    }),
+    formatting = {
+        format = function (entry, item)
+            item.menu = icons.source[entry.source.name]
+            item.kind = icons.completion[alllower(item.kind)]
+            return item
+        end
+    }
 }
 
 local capabilities = require 'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -235,11 +250,7 @@ require 'trouble'.setup {
     signs = icons.diagnostics
 }
 
-local kinds = vim.lsp.protocol.CompletionItemKind
-for i, kind in ipairs(kinds) do
-    kinds[i] = icons.completion[lower(kind)] or kind
-end
 for type, icon in pairs(icons.diagnostics) do
-    local hl = "DiagnosticSign" .. upper(type)
+    local hl = "DiagnosticSign" .. firstupper(type)
     vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
 end

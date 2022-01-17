@@ -1,7 +1,6 @@
 function map (mode, keys, command, options)
     options = options or {}
     options = {noremap = not options.remap, silent = not options.verbose}
-    print(options.silent)
     vim.api.nvim_set_keymap(mode, keys, command, options)
 end
 
@@ -57,10 +56,10 @@ function ftaction (filetype, action)
     end
 end
 
-function upper (str)
+function firstupper (str)
     return (str:gsub("^%l", string.upper))
 end
 
-function lower (str)
-    return (str:gsub("^%l", string.lower))
+function alllower (str)
+    return string.lower(str)
 end
