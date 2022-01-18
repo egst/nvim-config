@@ -95,7 +95,7 @@ init = {
 }
 
 for type, _ in pairs(init) do
-    autocmd('BufRead, BufWinEnter', '*', luacall('init.' .. type))
+    autocmd('BufWinEnter', '*', luacall('init.' .. type))
 end
 
 -- Telescope:
