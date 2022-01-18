@@ -54,6 +54,7 @@ vim.cmd 'filetype indent on'
 vim.cmd('colorscheme ' .. config.colorscheme)
 
 -- Syntax highlighting:
+
 function syntax (lang)
     return 'set syntax=' .. lang
 end
@@ -69,23 +70,33 @@ require 'gitsigns'.setup()
 require 'indent_blankline'.setup()
 
 -- Specific buffer types:
-helpinit = ftaction('help', function ()
-    vim.opt.list = true
-    vim.opt.listchars = {tab = '  '}
+
+local function vertinit ()
     vim.cmd [[wincmd H]]
-end)
-autocmd('BufWinEnter', '*', luacall 'helpinit')
-treeinit = ftaction('NvimTree', 'IndentBlanklineDisable')
-autocmd('BufWinEnter', '*', luacall 'treeinit')
-troubleinit = ftaction('Trouble', 'IndentBlanklineDisable')
-autocmd('BufWinEnter', '*', luacall 'troubleinit')
-gitinit = ftaction('git', function ()
-    vim.opt.list = true
-    vim.opt.listchars = {tab = '  '}
-    vim.cmd [[wincmd H]]
-    vim.cmd [[IndentBlanklineDisable]] -- TODO: This has no effect for some reason.
-end)
-autocmd('BufWinEnter', '*', luacall 'gitinit')
+end
+local function cleaninit ()
+    vim.opt.list           = true
+    vim.opt.listchars      = {tab = '  '}
+    vim.opt.colorcolumn    = {}
+    vim.opt.number         = false
+    vim.opt.relativenumber = false
+    vim.cmd [[IndentBlanklineDisable]]
+end
+local function cleanvertinit ()
+    cleaninit()
+    vertinit()
+end
+
+init = {
+    help     = ftaction('help',     cleanvertinit),
+    nvimtree = ftaction('NvimTree', cleaninit),
+    trouble  = ftaction('Trouble',  cleaninit),     -- TODO: trouble does not trigger BufRead nor BufWinEnter
+    git      = ftaction('git',      cleanvertinit), -- TODO: indent guides are not disabled in git log
+}
+
+for type, _ in pairs(init) do
+    autocmd('BufRead, BufWinEnter', '*', luacall('init.' .. type))
+end
 
 -- Telescope:
 require 'telescope'.setup {
@@ -183,18 +194,14 @@ cmp.setup {
         end
     }
 }
-
 local capabilities = require 'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
 for _, server in pairs(config.langservers) do
     require 'lspconfig'[server].setup {capabilities = capabilities}
 end
-
 vim.cmd [[set completeopt=menuone,noinsert,noselect]]
-
 require 'trouble'.setup {
     signs = config.icons.diagnostics.trouble
 }
-
 for type, icon in pairs(config.icons.diagnostics.native) do
     local hl = 'DiagnosticSign' .. firstupper(type)
     vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
