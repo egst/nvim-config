@@ -33,50 +33,79 @@ local langservers = {
     --'tsserver',
 }
 local icons = {
+    mode = { -- TODO: Use the same icons in the command line powerline.
+        --normal      = ' ',
+        --normal      = ' ',
+        --insert      = '﫦',
+        --insert      = ' ',
+        --replace     = ' ',
+        normal      = 'ﲼ ',
+        insert      = ' ',
+        visual      = '濾',
+        ['v-line']  = '麗',
+        ['v-block'] = '礪',
+        replace     = ' ',
+        command     = 'ﲵ ',
+    },
     diagnostics = { -- Native LSP
-        error = "﮻ ",
-        warn  = " ",
-        hint  = "ﯦ ",
-        info  = " ",
+        error = '﮻ ',
+        warn  = ' ',
+        hint  = 'ﯦ ',
+        info  = ' ',
     },
     trouble = { -- Trouble plugin.
-        error       = "﮻ ",
-        warning     = " ",
-        hint        = "ﯦ ",
-        information = " ",
-        other       = " ",
+        error       = '﮻ ',
+        warning     = ' ',
+        hint        = 'ﯦ ',
+        information = ' ',
+        other       = ' ',
     },
     completion = { -- Native LSP
-        class         = " ",
-        color         = " ",
-        constant      = " ",
-        constructor   = " ",
-        enum          = " ",
-        enumMember    = " ",
-        field         = " ",
-        file          = " ",
-        folder        = " ",
-        ['function']  = " ",
-        interface     = " ",
-        keyword       = " ",
-        method        = " ",
-        module        = " ",
-        property      = "ﰉ ",
-        snippet       = " ",
-        struct        = " ",
-        text          = " ",
-        unit          = " ",
-        value         = " ",
-        variable      = "ﰊ ",
-        reference     = " ",
-        event         = " ",
-        operator      = " ",
-        typeparameter = " ",
+        class         = ' ',
+        color         = ' ',
+        constant      = ' ',
+        constructor   = ' ',
+        enum          = ' ',
+        enumMember    = ' ',
+        field         = ' ',
+        file          = ' ',
+        folder        = ' ',
+        ['function']  = ' ',
+        interface     = ' ',
+        keyword       = ' ',
+        method        = ' ',
+        module        = ' ',
+        property      = 'ﰉ ',
+        snippet       = ' ',
+        struct        = ' ',
+        text          = ' ',
+        unit          = ' ',
+        value         = ' ',
+        variable      = 'ﰊ ',
+        reference     = ' ',
+        event         = ' ',
+        operator      = ' ',
+        typeparameter = ' ',
     },
     source = {
         nvim_lsp = 'λ ',
         buffer   = ' ',
     }
+}
+local colors = {
+    dark    = '#303040',
+    gray    = '#a0a0b0',
+    light   = '#404050',
+    black   = '#404050',
+    blue    = '#719cd6',
+    cyan    = '#63cdcf',
+    green   = '#81b29a',
+    magenta = '#9d79d6',
+    orange  = '#f4a261',
+    pink    = '#d67ad2',
+    red     = '#c94f6d',
+    white   = '#dfdfe0',
+    yellow  = '#dbc074',
 }
 
 -- General:
@@ -115,13 +144,6 @@ vim.cmd 'filetype indent on'
 
 vim.cmd('colorscheme ' .. colorscheme)
 
--- Help:
-helpinit = ftaction('help', function ()
-    vim.opt.list = true
-    vim.opt.listchars = {tab = '  '}
-    vim.cmd [[wincmd H]]
-end)
-autocmd('BufWinEnter', '*', luacall('helpinit'))
 
 -- Syntax highlighting:
 function syntax (lang)
@@ -138,27 +160,41 @@ require 'gitsigns'.setup()
 -- IndentBlankline:
 require 'indent_blankline'.setup()
 
+-- Specific buffer types:
+helpinit = ftaction('help', function ()
+    vim.opt.list = true
+    vim.opt.listchars = {tab = '  '}
+    vim.cmd [[wincmd H]]
+end)
+autocmd('BufWinEnter', '*', luacall 'helpinit')
 treeinit = ftaction('NvimTree', 'IndentBlanklineDisable')
-autocmd('BufWinEnter', '*', luacall('treeinit'))
+autocmd('BufWinEnter', '*', luacall 'treeinit')
 troubleinit = ftaction('Trouble', 'IndentBlanklineDisable')
-autocmd('BufWinEnter', '*', luacall('troubleinit'))
+autocmd('BufWinEnter', '*', luacall 'troubleinit')
+gitinit = ftaction('git', function ()
+    vim.opt.list = true
+    vim.opt.listchars = {tab = '  '}
+    vim.cmd [[wincmd H]]
+    vim.cmd [[IndentBlanklineDisable]] -- TODO: This has no effect for some reason.
+end)
+autocmd('BufWinEnter', '*', luacall 'gitinit')
 
 -- Telescope:
 require 'telescope'.setup {
     pickers = {
-        find_files                = {theme = "dropdown"},
-        grep_string               = {theme = "dropdown"},
-        current_buffer_fuzzy_find = {theme = "dropdown"},
-        marks                     = {theme = "dropdown"},
-        buffers                   = {theme = "dropdown", sort_lastused = true},
-        --help_tags = {theme = "dropdown"},
+        find_files                = {theme = 'dropdown'},
+        grep_string               = {theme = 'dropdown'},
+        current_buffer_fuzzy_find = {theme = 'dropdown'},
+        marks                     = {theme = 'dropdown'},
+        buffers                   = {theme = 'dropdown', sort_lastused = true},
+        --help_tags = {theme = 'dropdown'},
     },
 }
 require 'telescope'.load_extension 'fzf'
 
 -- TreeSitter:
 require 'nvim-treesitter.configs'.setup {
-    ensure_installed = "maintained",
+    ensure_installed = 'maintained',
     sync_install     = false,
     highlight = {
         enable  = true,
@@ -181,9 +217,12 @@ require 'nvim-tree'.setup {
         side = 'right',
         mappings = {
             list = {
-                {key = "C", cb = treecmd("cd")},
+                {key = 'C', cb = treecmd('cd')},
             }
         },
+    },
+    git = {
+        ignore = false,
     }
 }
 
@@ -201,8 +240,8 @@ vim.g.limelight_paragraph_span      = 1
 -- Vista:
 vim.g.vista_default_executive = 'coc'
 vim.g.vista_fzf_preview       = {'right: 50%'}
---vim.g.vista_icon_indent = {"▸ ", ""}
---vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
+--vim.g.vista_icon_indent = {'▸ ', ''}
+--vim.g.vista_icon_indent = {'╰─▸ ', '├─▸ '}
 
 -- Closetag:
 vim.g.closetag_filenames = '*.html,*.php'
@@ -220,7 +259,7 @@ cmp.setup {
         ['<C-D>']     = cmp.mapping(cmp.mapping.scroll_docs(4),  {'i', 'c'}),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(),      {'i', 'c'}),
         ['<C-Y>']     = cmp.config.disable, -- Not sure what's this for.
-        ['<CR>']      = cmp.mapping.confirm {select = true},
+        ['<Cr>']      = cmp.mapping.confirm {select = true},
         ['<C-E>']     = cmp.mapping {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
@@ -253,6 +292,63 @@ require 'trouble'.setup {
 }
 
 for type, icon in pairs(icons.diagnostics) do
-    local hl = "DiagnosticSign" .. firstupper(type)
+    local hl = 'DiagnosticSign' .. firstupper(type)
     vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
 end
+
+-- Lualine:
+local lltheme = {
+    normal = {
+        a = {bg = colors.gray,   fg = colors.black, gui = 'bold'},
+        b = {bg = colors.light,  fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    },
+    insert = {
+        a = {bg = colors.blue,   fg = colors.black, gui = 'bold'},
+        b = {bg = colors.light,  fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    },
+    visual = {
+        a = {bg = colors.yellow, fg = colors.black, gui = 'bold'},
+        b = {bg = colors.light,  fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    },
+    replace = {
+        a = {bg = colors.red,    fg = colors.black, gui = 'bold'},
+        b = {bg = colors.light,  fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    },
+    command = {
+        a = {bg = colors.green,  fg = colors.black, gui = 'bold'},
+        b = {bg = colors.light,  fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    },
+    inactive = {
+        a = {bg = colors.dark,   fg = colors.gray, gui = 'bold'},
+        b = {bg = colors.dark,   fg = colors.gray},
+        c = {bg = colors.dark,   fg = colors.gray}
+    }
+}
+local function modefmt (mode)
+    --return (icons.mode[alllower(mode)] or ' ') .. mode
+    return (icons.mode[alllower(mode)] or ' ')
+end
+require 'lualine'.setup {
+    options = {
+        theme = lltheme,
+        component_separators = {left = '│', right = '│'},
+        section_separators   = {left = '',  right = ''},
+        disabled_filetypes = {
+            'NvimTree',
+            'Trouble',
+        }
+    },
+    sections = {
+        lualine_a = {{'mode', fmt = modefmt}},
+        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_c = {'filename'},
+        lualine_x = {'encoding', 'fileformat', 'filetype'},
+        lualine_y = {'progress'},
+        lualine_z = {'location'}
+    }
+}

@@ -63,3 +63,22 @@ end
 function alllower (str)
     return string.lower(str)
 end
+
+function plugload (f)
+    local function plug (args)
+        local handle = vim.fn['plug#']
+        target = args[1]
+        params = args
+        params[1]    = nil
+        params['do'] = params.run
+        params.run   = nil
+        if next(params) then
+            handle(target, params)
+        else
+            handle(target)
+        end
+    end
+    vim.call('plug#begin', '~/.config/nvim/plugged')
+    f(plug)
+    vim.call('plug#end')
+end
