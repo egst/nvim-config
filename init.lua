@@ -11,102 +11,11 @@ TODOs:
 --]==]
 
 require 'helpers'
-require 'plugins'
 require 'keymaps'
+require 'plugins'
 require 'snippets'
 
---local colorscheme = 'dawnfox'
-local colorscheme = 'duskfox'
-local rulers      = {120}
-local scrolloff   = {x = 32, y = 8}
-local tabwidth    = 4
-local whitespace  = {
-    tab      = ' ━ ',
-    trail    = '·',
-    extends  = '›',
-    precedes = '‹'
-}
-local langservers = {
-    'clangd',
-    --'psalm',
-    --'sumneko_lua',
-    --'tsserver',
-}
-local icons = {
-    mode = { -- TODO: Use the same icons in the command line powerline.
-        --normal      = ' ',
-        --normal      = ' ',
-        --insert      = '﫦',
-        --insert      = ' ',
-        --replace     = ' ',
-        normal      = 'ﲼ ',
-        insert      = ' ',
-        visual      = '濾',
-        ['v-line']  = '麗',
-        ['v-block'] = '礪',
-        replace     = ' ',
-        command     = 'ﲵ ',
-    },
-    diagnostics = { -- Native LSP
-        error = '﮻ ',
-        warn  = ' ',
-        hint  = 'ﯦ ',
-        info  = ' ',
-    },
-    trouble = { -- Trouble plugin.
-        error       = '﮻ ',
-        warning     = ' ',
-        hint        = 'ﯦ ',
-        information = ' ',
-        other       = ' ',
-    },
-    completion = { -- Native LSP
-        class         = ' ',
-        color         = ' ',
-        constant      = ' ',
-        constructor   = ' ',
-        enum          = ' ',
-        enumMember    = ' ',
-        field         = ' ',
-        file          = ' ',
-        folder        = ' ',
-        ['function']  = ' ',
-        interface     = ' ',
-        keyword       = ' ',
-        method        = ' ',
-        module        = ' ',
-        property      = 'ﰉ ',
-        snippet       = ' ',
-        struct        = ' ',
-        text          = ' ',
-        unit          = ' ',
-        value         = ' ',
-        variable      = 'ﰊ ',
-        reference     = ' ',
-        event         = ' ',
-        operator      = ' ',
-        typeparameter = ' ',
-    },
-    source = {
-        nvim_lsp = 'λ ',
-        buffer   = ' ',
-    }
-}
-local colors = {
-    dark    = '#303040',
-    gray    = '#a0a0b0',
-    light   = '#404050',
-    black   = '#404050',
-    blue    = '#719cd6',
-    cyan    = '#63cdcf',
-    green   = '#81b29a',
-    magenta = '#9d79d6',
-    orange  = '#f4a261',
-    pink    = '#d67ad2',
-    red     = '#c94f6d',
-    white   = '#dfdfe0',
-    yellow  = '#dbc074',
-}
+local config = require 'config'
 
 -- General:
 vim.opt.encoding       = 'utf-8'
@@ -116,19 +25,19 @@ vim.opt.wrap           = false
 vim.opt.cursorline     = true
 vim.opt.incsearch      = true
 vim.opt.hlsearch       = true
-vim.opt.tabstop        = tabwidth
-vim.opt.shiftwidth     = tabwidth
+vim.opt.tabstop        = config.tabwidth
+vim.opt.shiftwidth     = config.tabwidth
 vim.opt.expandtab      = true
 vim.opt.foldmethod     = 'manual'
 vim.opt.foldenable     = false
 vim.opt.updatetime     = 500
 vim.opt.hidden         = true
-vim.opt.colorcolumn    = rulers
-vim.opt.sidescrolloff  = scrolloff.x
-vim.opt.scrolloff      = scrolloff.y
+vim.opt.colorcolumn    = config.rulers
+vim.opt.sidescrolloff  = config.scrolloff.x
+vim.opt.scrolloff      = config.scrolloff.y
 vim.opt.termguicolors  = true
 vim.opt.list           = true
-vim.opt.listchars      = whitespace
+vim.opt.listchars      = config.whitespace
 vim.opt.signcolumn     = 'yes'
 vim.opt.mouse          = 'a'
 vim.opt.ttimeoutlen    = 0
@@ -142,7 +51,7 @@ vim.cmd 'filetype on'
 vim.cmd 'filetype plugin on'
 vim.cmd 'filetype indent on'
 
-vim.cmd('colorscheme ' .. colorscheme)
+vim.cmd('colorscheme ' .. config.colorscheme)
 
 
 -- Syntax highlighting:
@@ -204,6 +113,7 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 -- NvimTree:
+vim.g.nvim_tree_icons = config.icons.nvimtree
 vim.g.nvim_tree_indent_markers = 1
 --vim.g.nvim_tree_icon_padding   = '  '
 local treecmd = require 'nvim-tree.config'.nvim_tree_callback
@@ -222,8 +132,12 @@ require 'nvim-tree'.setup {
         },
     },
     git = {
-        ignore = false,
-    }
+        ignore = false
+    },
+    diagnostics = {
+        enable = true,
+        icons = config.icons.diagnostics.nvimtree
+    },
 }
 
 -- GitSigns:
@@ -273,25 +187,25 @@ cmp.setup {
     }),
     formatting = {
         format = function (entry, item)
-            item.menu = icons.source[entry.source.name]
-            item.kind = icons.completion[alllower(item.kind)]
+            item.menu = config.icons.source[entry.source.name]
+            item.kind = config.icons.completion[alllower(item.kind)]
             return item
         end
     }
 }
 
 local capabilities = require 'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
-for _, server in pairs(langservers) do
+for _, server in pairs(config.langservers) do
     require 'lspconfig'[server].setup {capabilities = capabilities}
 end
 
 vim.cmd [[set completeopt=menuone,noinsert,noselect]]
 
 require 'trouble'.setup {
-    signs = icons.diagnostics
+    signs = config.icons.diagnostics.trouble
 }
 
-for type, icon in pairs(icons.diagnostics) do
+for type, icon in pairs(config.icons.diagnostics.native) do
     local hl = 'DiagnosticSign' .. firstupper(type)
     vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
 end
@@ -299,39 +213,45 @@ end
 -- Lualine:
 local lltheme = {
     normal = {
-        a = {bg = colors.gray,   fg = colors.black, gui = 'bold'},
-        b = {bg = colors.light,  fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.gray,   fg = config.colors.black, gui = 'bold'},
+        b = {bg = config.colors.light,  fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     },
     insert = {
-        a = {bg = colors.blue,   fg = colors.black, gui = 'bold'},
-        b = {bg = colors.light,  fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.blue,   fg = config.colors.black, gui = 'bold'},
+        b = {bg = config.colors.light,  fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     },
     visual = {
-        a = {bg = colors.yellow, fg = colors.black, gui = 'bold'},
-        b = {bg = colors.light,  fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.yellow, fg = config.colors.black, gui = 'bold'},
+        b = {bg = config.colors.light,  fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     },
     replace = {
-        a = {bg = colors.red,    fg = colors.black, gui = 'bold'},
-        b = {bg = colors.light,  fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.red,    fg = config.colors.black, gui = 'bold'},
+        b = {bg = config.colors.light,  fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     },
     command = {
-        a = {bg = colors.green,  fg = colors.black, gui = 'bold'},
-        b = {bg = colors.light,  fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.green,  fg = config.colors.black, gui = 'bold'},
+        b = {bg = config.colors.light,  fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     },
     inactive = {
-        a = {bg = colors.dark,   fg = colors.gray, gui = 'bold'},
-        b = {bg = colors.dark,   fg = colors.gray},
-        c = {bg = colors.dark,   fg = colors.gray}
+        a = {bg = config.colors.dark,   fg = config.colors.gray, gui = 'bold'},
+        b = {bg = config.colors.dark,   fg = config.colors.gray},
+        c = {bg = config.colors.dark,   fg = config.colors.gray}
     }
 }
 local function modefmt (mode)
-    --return (icons.mode[alllower(mode)] or ' ') .. mode
-    return (icons.mode[alllower(mode)] or ' ')
+    return (config.icons.mode[alllower(mode)] or ' ')
+end
+local function diagfmt (status)
+    return status
+        :gsub('% ', config.icons.diagnostics.native.error)
+        :gsub('% ', config.icons.diagnostics.native.warn)
+        --:gsub('%? ', config.icons.diagnostics.native.hint) -- TODO
+        --:gsub('%? ', config.icons.diagnostics.native.info) -- TODO
 end
 require 'lualine'.setup {
     options = {
@@ -345,7 +265,7 @@ require 'lualine'.setup {
     },
     sections = {
         lualine_a = {{'mode', fmt = modefmt}},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_b = {'branch', 'diff', {'diagnostics', fmt = diagfmt}},
         lualine_c = {'filename'},
         lualine_x = {'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
