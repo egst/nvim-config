@@ -92,3 +92,11 @@ vim.cmd [[
 ]]
 vim.cmd [[command! Hg :call HiGroup()]]
 ]=]
+
+--[=[
+-- Vista:
+vim.g.vista_default_executive = 'coc'
+vim.g.vista_fzf_preview       = {'right: 50%'}
+--vim.g.vista_icon_indent = {'▸ ', ''}
+--vim.g.vista_icon_indent = {'╰─▸ ', '├─▸ '}
+]=]

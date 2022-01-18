@@ -53,7 +53,6 @@ vim.cmd 'filetype indent on'
 
 vim.cmd('colorscheme ' .. config.colorscheme)
 
-
 -- Syntax highlighting:
 function syntax (lang)
     return 'set syntax=' .. lang
@@ -115,7 +114,7 @@ require 'nvim-treesitter.configs'.setup {
 -- NvimTree:
 vim.g.nvim_tree_icons = config.icons.nvimtree
 vim.g.nvim_tree_indent_markers = 1
---vim.g.nvim_tree_icon_padding   = '  '
+--vim.g.nvim_tree_icon_padding = '  '
 local treecmd = require 'nvim-tree.config'.nvim_tree_callback
 require 'nvim-tree'.setup {
     --disable_netrw = false,
@@ -140,9 +139,6 @@ require 'nvim-tree'.setup {
     },
 }
 
--- GitSigns:
---vim.cmd [[set statusline+=%{get(b:,'gitsigns_status','')}]]
-
 -- Goyo:
 vim.g.goyo_width  = 121
 vim.g.goyo_linenr = 1
@@ -150,12 +146,6 @@ vim.g.goyo_linenr = 1
 -- Limelight:
 vim.g.limelight_default_coefficient = 0.7
 vim.g.limelight_paragraph_span      = 1
-
--- Vista:
-vim.g.vista_default_executive = 'coc'
-vim.g.vista_fzf_preview       = {'right: 50%'}
---vim.g.vista_icon_indent = {'▸ ', ''}
---vim.g.vista_icon_indent = {'╰─▸ ', '├─▸ '}
 
 -- Closetag:
 vim.g.closetag_filenames = '*.html,*.php'
