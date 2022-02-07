@@ -1,19 +1,24 @@
 require 'helpers'
 
--- C++ header file init:
+-- C++:
+-- header file init:
 snippet('hpp', 'i#pragma once<Cr><Cr>namespace Ns {<Cr><Cr>}<Esc>2kwcw')
--- C++ inspect (esl):
+-- inspect (esl):
 snippet('civ', 'oESL_INSPECT();<Esc>hi')
 snippet('cit', 'oESL_INSPECT_TYPE();<Esc>hi')
--- C++ cout:
+-- cout:
 snippet('co', 'ostd::cout << "" << "\\n";<Esc>3Ba')
 
--- PHP class file init:
+-- PHP:
+-- class file init:
 snippet('php', 'i<?php declare(strict_types = 1);<Cr><Cr>namespace Ns;<Cr><Cr>class Cls {<Cr><Cr>}<Esc>4kwcw')
+-- inline echo inject:
+snippet('pie', 'i<?=  ?><Esc>hhi')
 
--- Tex inline verbatim:
+-- TeX:
+-- inline verbatim:
 snippet('tiv', 'a\\verb||<Esc>i')
--- Tex bold:
+-- bold:
 snippet('tbf', 'a\\textbf{}<Esc>i')
--- Tex italics:
+-- italics:
 snippet('tit', 'a\\textit{}<Esc>i')

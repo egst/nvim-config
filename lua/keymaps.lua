@@ -49,19 +49,30 @@ nnoremap('*', '*N')
 -- no [H]ighlight:
 nnoremap('<Leader>H', ':noh<Cr>')
 
+nnoremap('<C-L>', '20zl')
+nnoremap('<C-H>', '20zh')
+
 -- Whitespace:
 -- [T]oggle [T]abs & spaces:
 nnoremap('<Leader>T', ':if &expandtab | set noexpandtab | else | set expandtab | endif<Cr>')
--- [d]urge [t]railing whitespace:
-nnoremap('dt', ':%s/\\s\\+$//e<Cr>')
--- [d]elete [r]epeated space after a <w>ord:
+-- [d]elete trailing white[S]pace:
+nnoremap('dS', ':%s/\\s\\+$//e<Cr>')
+-- [d]elete [r]epeated space after a "word":
 nnoremap('dr', 'elcw <Esc>')
--- [d]elete [R]epeated space after a <W>ord:
+-- [d]elete [R]epeated space after a "Word":
 nnoremap('dR', 'Elcw <Esc>')
 
 -- Settings:
--- open [s]ettings: [v]im:
+-- open [s]ettings: n[v]im:
 nnoremap('<Leader>sv', ':e ~/.config/nvim/init.lua<Cr>')
+-- open [s]ettings: nvim [k]keymaps:
+nnoremap('<Leader>sk', ':e ~/.config/nvim/lua/keymaps.lua<Cr>')
+-- open [s]ettings: nvim s[n]ippets:
+nnoremap('<Leader>sn', ':e ~/.config/nvim/lua/snippets.lua<Cr>')
+-- open [s]ettings: nvim [p]lugins:
+nnoremap('<Leader>sp', ':e ~/.config/nvim/lua/plugins.lua<Cr>')
+-- open [s]ettings: nvim [c]onfig:
+nnoremap('<Leader>sc', ':e ~/.config/nvim/lua/config.lua<Cr>')
 -- open [s]ettings: [w]indows terminal:
 nnoremap('<Leader>sw', ':e ~/.wt.json<Cr>')
 -- open [s]ettings: [h]yper:
@@ -70,10 +81,20 @@ nnoremap('<Leader>sh', ':e ~/.hyper.js<Cr>')
 nnoremap('<Leader>st', ':e ~/.tmux.conf<Cr>')
 -- open [s]ettings: [b]ash:
 nnoremap('<Leader>sb', ':e ~/.bashrc<Cr>')
+-- open [s]ettings: bash [i]nputrc:
+nnoremap('<Leader>si', ':e ~/.inputrc<Cr>')
+-- open [s]ettings: bash [a]liases:
+nnoremap('<Leader>sa', ':e ~/.config/bash/aliases<Cr>')
+-- open [s]ettings: bash [l]ocations:
+nnoremap('<Leader>sl', ':e ~/.config/bash/locations<Cr>')
+-- open [s]ettings: bash path [e]nvironment variable: (TODO: Come up with a better mnemonic.)
+nnoremap('<Leader>se', ':e ~/.config/bash/paths<Cr>')
+-- open [s]ettings: [s]tarship:
+nnoremap('<Leader>ss', ':e ~/.config/bash/starship.toml<Cr>')
 -- vim [s]ettings [r]eload:
 nnoremap('<Leader>sr', ':Reload<Cr>:noh<Cr>')
 --nnoremap('<Leader>sv', ':e ~/.vimrc<Cr>')
---nnoremap('<Leader>r', ':source ~/.vimrc<Cr>')
+--nnoremap('<Leader>sr', ':source ~/.vimrc<Cr>')
 
 -- Other:
 -- [R]eorder (sort) lines:
@@ -148,3 +169,9 @@ nnoremap('<Leader>er', ':TroubleToggle lsp_references<cr>')
 nnoremap('<Leader>en', ':lua vim.diagnostic.goto_next()<cr>')
 -- [e]rror - go to the previous [N] one:
 nnoremap('<Leader>eN', ':lua vim.diagnostic.goto_prev()<cr>')
+-- [e]rrors & diagnostics - [h]over info:
+nnoremap('<Leader>eh', ':lua vim.lsp.buf.hover()<cr>')
+-- [e]rrors & diagnostics - [g]o to definition:
+nnoremap('<Leader>eg', ':lua vim.lsp.buf.definition()<cr>')
+-- [e]rrors & diagnostics - [s]tatus (log):
+nnoremap('<Leader>es', ':e $HOME/.cache/nvim/lsp.log<cr>')

@@ -12,6 +12,7 @@ plugload(function (plug)
     plug {'vitalk/vim-shebang'}      -- Infering filetype from shebang.
 
     -- Language support:
+    plug {'sheerun/vim-polyglot'}
     plug {'alvan/vim-closetag'}                                   -- Autoclosing HTML tags.
     plug {'captbaritone/better-indent-support-for-php-with-html'} -- HTML indentation in PHP.
     plug {'nvim-treesitter/nvim-treesitter'}                      -- Better syntax highlighting.
