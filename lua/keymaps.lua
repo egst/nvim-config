@@ -64,7 +64,7 @@ nnoremap('dR', 'Elcw <Esc>')
 
 -- Settings:
 -- open [s]ettings: n[v]im:
-nnoremap('<Leader>sv', ':e ~/.config/nvim/init.lua<Cr>')
+nnoremap('<Leader>sv', ':e ~/.config/nvim/lua/setup.lua<Cr>')
 -- open [s]ettings: nvim [k]keymaps:
 nnoremap('<Leader>sk', ':e ~/.config/nvim/lua/keymaps.lua<Cr>')
 -- open [s]ettings: nvim s[n]ippets:
