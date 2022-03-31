@@ -24,6 +24,10 @@ require 'plugins'
 require 'snippets'
 
 local config = require 'config'
+local env    = require 'env'
+
+-- TODO: Restructure the config, so that this can be placed in it without cyclic dependencies.
+--config.langservers.noverify.root_dir = require 'lspconfig.util'.root_pattern('psalm.xml', 'psalm.xml.dist')
 
 -- General:
 vim.opt.encoding       = 'utf-8'
@@ -54,25 +58,44 @@ vim.opt.conceallevel   = 3
 vim.opt.number         = true
 vim.opt.undodir        = vim.env.HOME .. '/.vim/undodir'
 vim.opt.undofile       = true
---vim.opt.smartindent    = true
+
+--vim.opt.smartindent = true
 
 --vim.cmd 'syntax on'
-vim.cmd 'filetype on'
-vim.cmd 'filetype plugin on'
-vim.cmd 'filetype indent on'
+--vim.cmd 'filetype on'
+--vim.cmd 'filetype plugin on'
+--vim.cmd 'filetype indent on'
 
 vim.cmd('colorscheme ' .. config.colorscheme)
 
--- Syntax highlighting:
+-- Indentation:
 
-function syntax (lang)
-    return 'set syntax=' .. lang
-end
---autocmd('BufNewFile,BufRead', '*.cth', luacall('syntax', 'c'))
-autocmd('BufNewFile,BufRead', '*.cth', 'set syntax=c')
+ftautocmd('c',   setlocal('comments', comments('multi', 'doc', 'slash')))
+ftautocmd('cpp', setlocal('comments', comments('multi', 'doc', 'slash')))
+ftautocmd('js',  setlocal('comments', comments('multi', 'doc', 'slash')))
+ftautocmd('php', setlocal('comments', comments('multi', 'doc', 'slash', 'hash')))
+ftautocmd('cth', setlocal('comments', comments('multi', 'doc', 'slash', 'hash')))
 
---vim.cmd [[hi clear TSNote]]
---vim.cmd [[hi clear Special]]
+ftautocmd('c',   setlocal('formatoptions', formatting('basic')))
+ftautocmd('cpp', setlocal('formatoptions', formatting('basic')))
+ftautocmd('js',  setlocal('formatoptions', formatting('basic')))
+ftautocmd('php', setlocal('formatoptions', formatting('basic')))
+ftautocmd('cth', setlocal('formatoptions', formatting('basic')))
+
+ftautocmd('c',   setlocal('cindent'))
+ftautocmd('cpp', setlocal('cindent'))
+ftautocmd('js',  setlocal('cindent'))
+ftautocmd('php', setlocal('cindent'))
+ftautocmd('cth', setlocal('cindent'))
+
+ftautocmd('php', setlocal('indentexpr', ''))
+
+vim.cmd(set('cinkeys-',    '0#'))
+vim.cmd(set('indentkeys-', '0#'))
+
+-- Additional languages:
+filetype('*.cth', 'cynth')
+syntax('*.cth', 'c')
 
 -- GitSigns:
 require 'gitsigns'.setup()
@@ -196,15 +219,17 @@ hi('NormalFloat', nil, config.colors.dark)
 --hi('FloatBorder', config.colors.blue)
 
 -- TreeSitter:
-require 'nvim-treesitter.configs'.setup {
-    ensure_installed = 'maintained',
-    sync_install     = false,
-    highlight = {
-        enable  = true,
-        disable = {},
-        --additional_vim_regex_highlighting = true
+if env.treesitter then
+    require 'nvim-treesitter.configs'.setup {
+        ensure_installed = 'maintained',
+        sync_install     = false,
+        highlight = {
+            enable  = true,
+            disable = {},
+            additional_vim_regex_highlighting = true
+        }
     }
-}
+end
 
 -- NvimTree:
 vim.g.nvim_tree_icons = config.icons.nvimtree
@@ -246,52 +271,54 @@ vim.g.limelight_paragraph_span      = 1
 vim.g.closetag_filenames = '*.html,*.php'
 
 -- LSP and related plugins:
-local cmp = require 'cmp'
-cmp.setup {
-    snippet = {
-        expand = function(args)
-            require 'snippy'.expand_snippet(args.body)
-        end,
-    },
-    mapping = {
-        ['<C-U>']     = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
-        ['<C-D>']     = cmp.mapping(cmp.mapping.scroll_docs(4),  {'i', 'c'}),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(),      {'i', 'c'}),
-        ['<C-Y>']     = cmp.config.disable, -- Not sure what's this for.
-        --['<Down>']    = cmp.config.disable,
-        --['<Up>']      = cmp.config.disable,
-        ['<Cr>']      = cmp.mapping.confirm {select = true},
-        ['<C-E>']     = cmp.mapping {
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
+if env.lsp then
+    local cmp = require 'cmp'
+    cmp.setup {
+        snippet = {
+            expand = function(args)
+                require 'snippy'.expand_snippet(args.body)
+            end,
         },
-    },
-    sources = cmp.config.sources({
-        {name = 'nvim_lsp'},
-        {name = 'snippy'},
-    }, {
-        {name = 'buffer'},
-    }),
-    formatting = {
-        format = function (entry, item)
-            item.menu = config.icons.source[entry.source.name]
-            item.kind = config.icons.completion[alllower(item.kind)]
-            return item
-        end
+        mapping = {
+            ['<C-U>']     = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
+            ['<C-D>']     = cmp.mapping(cmp.mapping.scroll_docs(4),  {'i', 'c'}),
+            ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(),      {'i', 'c'}),
+            ['<C-Y>']     = cmp.config.disable, -- Not sure what's this for.
+            --['<Down>']    = cmp.config.disable,
+            --['<Up>']      = cmp.config.disable,
+            ['<Cr>']      = cmp.mapping.confirm {select = true},
+            ['<C-E>']     = cmp.mapping {
+                i = cmp.mapping.abort(),
+                c = cmp.mapping.close(),
+            },
+        },
+        sources = cmp.config.sources({
+            {name = 'nvim_lsp'},
+            {name = 'snippy'},
+        }, {
+            {name = 'buffer'},
+        }),
+        formatting = {
+            format = function (entry, item)
+                item.menu = config.icons.source[entry.source.name]
+                item.kind = config.icons.completion[alllower(item.kind)]
+                return item
+            end
+        }
     }
-}
-local capabilities = require 'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
-for server, opts in pairs(config.langservers) do
-    opts.capabilities = capabilities
-    require 'lspconfig'[server].setup(opts)
-end
-vim.cmd [[set completeopt=menuone,noinsert,noselect]]
-require 'trouble'.setup {
-    signs = config.icons.diagnostics.trouble
-}
-for type, icon in pairs(config.icons.diagnostics.native) do
-    local hl = 'DiagnosticSign' .. firstupper(type)
-    vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
+    local capabilities = require 'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    for server, opts in pairs(config.langservers) do
+        opts.capabilities = capabilities
+        require 'lspconfig'[server].setup(opts)
+    end
+    vim.cmd [[set completeopt=menuone,noinsert,noselect]]
+    require 'trouble'.setup {
+        signs = config.icons.diagnostics.trouble
+    }
+    for type, icon in pairs(config.icons.diagnostics.native) do
+        local hl = 'DiagnosticSign' .. firstupper(type)
+        vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
+    end
 end
 
 -- Lualine:
@@ -356,3 +383,17 @@ require 'lualine'.setup {
         lualine_z = {'location'}
     }
 }
+
+-- Snippy:
+--[=[require 'snippy'.setup {
+    mappings = {
+        is = {
+            ['<Tab>'] = 'expand_or_advance',
+            ['<S-Tab>'] = 'previous',
+        },
+        nx = {
+            ['<leader>x'] = 'cut_text',
+        },
+    },
+}
+]=]

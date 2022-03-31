@@ -1,3 +1,5 @@
+local config = require 'config'
+
 function map (mode, keys, command, options)
     options = options or {}
     options = {noremap = not options.remap, silent = not options.verbose}
@@ -56,6 +58,10 @@ function ftaction (filetype, action)
     end
 end
 
+function ftautocmd (type, cmd)
+    autocmd('FileType', type, cmd)
+end
+
 function firstupper (str)
     return (str:gsub("^%l", string.upper))
 end
@@ -81,4 +87,42 @@ function plugload (f)
     vim.call('plug#begin', '~/.config/nvim/plugged')
     f(plug)
     vim.call('plug#end')
+end
+
+function filetype (match, type)
+    autocmd('BufNewFile,BufRead', match, 'set filetype=' .. type)
+end
+
+function syntax (match, lang)
+    autocmd('BufNewFile,BufRead', match, 'set syntax=' .. lang)
+end
+
+function set (entry, value)
+    if value then
+        return 'set ' .. entry .. '=' .. value
+    else
+        return 'set ' .. entry
+    end
+end
+
+function setlocal (entry, value)
+    if value then
+        return 'setlocal ' .. entry .. '=' .. value
+    else
+        return 'setlocal ' .. entry
+    end
+end
+
+function comments (...)
+    local shapes = {}
+    for i, shape in ipairs({...}) do
+        if config.comments[shape] then
+            table.insert(shapes, config.comments[shape])
+        end
+    end
+    return table.concat(shapes, ',')
+end
+
+function formatting (format)
+    return config.formatting[format] or ''
 end

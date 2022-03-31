@@ -1,5 +1,7 @@
+--local lsputil = require 'lspconfig.util'
+
 return {
-    --colorscheme = 'dawnfox',
+    colorscheme = 'dawnfox',
     colorscheme = 'duskfox',
 
     tabwidth  = 4,
@@ -19,7 +21,16 @@ return {
             --cmd = {'clangd', '--query-driver=/usr/bin/clang++'}
         },
         cssls = {},
-        psalm = {},
+        psalm = {
+            cmd = {'psalm-language-server'}
+        },
+        --[[
+        noverify = {
+            cmd       = {'noverify', 'check', '-lang-server'},
+            filetypes = {'php'},
+            --root_dir  = lsputil.root_pattern('psalm.xml', 'psalm.xml.dist')
+        },
+        ]]
         --sumneko_lua = {},
         --tsserver = {},
     },
@@ -145,4 +156,16 @@ return {
         red     = '#c94f6d',
         yellow  = '#dbc074',
     },
+
+    comments = {
+        slash = '://',               -- // ...
+        hash  = ':#',                -- # ...
+        multi = 's1:/*,mb:*,ex:*/',  -- /** ... * ... */
+        doc   = 's1:/**,mb:*,ex:*/', -- /* ... * ... */
+        plain = 's1:/*,mb:,ex:*/',   -- /* ... */
+    },
+
+    formatting = {
+		basic = 'jcroql' -- TODO
+	}
 }
