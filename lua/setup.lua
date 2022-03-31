@@ -58,6 +58,7 @@ vim.opt.conceallevel   = 3
 vim.opt.number         = true
 vim.opt.undodir        = vim.env.HOME .. '/.vim/undodir'
 vim.opt.undofile       = true
+vim.opt.backupcopy     = 'yes'
 
 --vim.opt.smartindent = true
 
