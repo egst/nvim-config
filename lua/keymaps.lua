@@ -1,5 +1,7 @@
 require 'helpers'
 
+local env = require 'env'
+
 -- Leader:
 nmap('<Space>', '<Leader>')
 xmap('<Space>', '<Leader>')
@@ -40,7 +42,8 @@ nnoremap('<PageUp>',   ':wincmd +<Cr>')
 nnoremap('<PageDown>', ':wincmd -<Cr>')
 
 -- Xclip:
-nnoremap('<Leader>y', ':call system(\'xclip\', @0)<Cr>')
+nnoremap('<Leader>y', ':call system(\'xclip -selection ' .. env.selection .. '\', @0)<Cr>')
+--nnoremap('<Leader>p', ':r !xclip -o<Cr> -selection ' .. env.selection)
 nnoremap('<Leader>p', ':r !xclip -o<Cr>')
 
 -- Search:
@@ -73,6 +76,8 @@ nnoremap('<Leader>sn', ':e ~/.config/nvim/lua/snippets.lua<Cr>')
 nnoremap('<Leader>sp', ':e ~/.config/nvim/lua/plugins.lua<Cr>')
 -- open [s]ettings: nvim [c]onfig:
 nnoremap('<Leader>sc', ':e ~/.config/nvim/lua/config.lua<Cr>')
+-- open [s]ettings: nvim [L]ocal config:
+nnoremap('<Leader>sL', ':e ~/.config/nvim/lua/env.lua<Cr>')
 -- open [s]ettings: [w]indows terminal:
 nnoremap('<Leader>sw', ':e ~/.wt.json<Cr>')
 -- open [s]ettings: [h]yper:

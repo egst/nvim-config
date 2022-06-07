@@ -21,6 +21,11 @@ snippet('pie', [[a<?=  ?><Esc>hhi]])
 -- inspect (psalm):
 snippet('pit', [[o/** @psalm-trace  */;<Esc>Bhi]])
 
+-- PeoplePath:
+-- log:
+--snippet('ppl', [[o\IW\Core\Log::getLogger(self::class)->info('--- | VAR | ' . var_export(, true)); //TODO: remove<Esc>3Bba]])
+snippet('ppl', [[o\IW\Core\Log::getLogger(__FILE__)->info('--- | VAR | ' . var_export(, true)); //TODO: remove<Esc>3Bba]])
+
 -- TeX:
 -- inline verbatim:
 snippet('tiv', [[a\verb||<Esc>i]])

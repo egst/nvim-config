@@ -1,8 +1,8 @@
 --local lsputil = require 'lspconfig.util'
 
 return {
-    colorscheme = 'dawnfox',
-    colorscheme = 'duskfox',
+    lightscheme = 'dawnfox',
+    darkscheme  = 'duskfox',
 
     tabwidth  = 4,
     rulers    = {120},
@@ -22,8 +22,10 @@ return {
         },
         cssls = {},
         psalm = {
-            cmd = {'psalm-language-server'}
+            --cmd = {'psalm-language-server'}
+            cmd = {'.idea/psalm-ls'}
         },
+        intelephense = {},
         --[[
         noverify = {
             cmd       = {'noverify', 'check', '-lang-server'},
@@ -166,6 +168,6 @@ return {
     },
 
     formatting = {
-		basic = 'jcroql' -- TODO
-	}
+        basic = 'jcroql' -- TODO
+    }
 }

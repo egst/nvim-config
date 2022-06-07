@@ -25,7 +25,7 @@ plugload(function (plug)
 
     -- Visual elements:
     plug {'kyazdani42/nvim-web-devicons'}        -- A lua port of the original devicons.
-    plug {'lukas-reineke/indent-blankline.nvim'} -- Indentation guides.
+    --plug {'lukas-reineke/indent-blankline.nvim'} -- Indentation guides.
 
     -- Search and navigation:
     plug {'nvim-telescope/telescope.nvim'}                          -- An alternative to the original Fzf.

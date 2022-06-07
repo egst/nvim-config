@@ -67,7 +67,16 @@ vim.opt.backupcopy     = 'yes'
 --vim.cmd 'filetype plugin on'
 --vim.cmd 'filetype indent on'
 
-vim.cmd('colorscheme ' .. config.colorscheme)
+if env.light then
+    vim.cmd('colorscheme ' .. config.lightscheme)
+else
+    vim.cmd('colorscheme ' .. config.darkscheme)
+end
+
+if env.transparent then
+    vim.cmd 'hi Normal guibg=NONE ctermbg=NONE'
+    vim.cmd 'hi NormalNC guibg=NONE ctermbg=NONE'
+end
 
 -- Indentation:
 
@@ -102,7 +111,7 @@ syntax('*.cth', 'c')
 require 'gitsigns'.setup()
 
 -- IndentBlankline:
-require 'indent_blankline'.setup()
+--require 'indent_blankline'.setup()
 
 -- Specific buffer types:
 
@@ -193,6 +202,7 @@ require 'telescope'.setup {
         }
     }
 }
+--require 'telescope'
 require 'telescope'.load_extension 'fzf'
 --require 'telescope'.load_extension 'themes'
 --require 'telescope'.load_extension 'terms'
@@ -233,8 +243,8 @@ if env.treesitter then
 end
 
 -- NvimTree:
-vim.g.nvim_tree_icons = config.icons.nvimtree
-vim.g.nvim_tree_indent_markers = 1
+--vim.g.nvim_tree_icons = config.icons.nvimtree
+--vim.g.nvim_tree_indent_markers = 1
 --vim.g.nvim_tree_icon_padding = '  '
 local treecmd = require 'nvim-tree.config'.nvim_tree_callback
 require 'nvim-tree'.setup {
@@ -248,6 +258,7 @@ require 'nvim-tree'.setup {
         mappings = {
             list = {
                 {key = 'C', cb = treecmd('cd')},
+                {key = '<C-e>', action = ''},
             }
         },
     },
@@ -257,6 +268,15 @@ require 'nvim-tree'.setup {
     diagnostics = {
         enable = true,
         icons = config.icons.diagnostics.nvimtree
+    },
+    renderer = {
+        indent_markers = {
+            enable = true
+        },
+        icons = {
+            glyphs = config.icons.nvimtree,
+            --padding = '  '
+        }
     }
 }
 
@@ -378,7 +398,7 @@ require 'lualine'.setup {
     sections = {
         lualine_a = {{'mode', fmt = modefmt}},
         lualine_b = {'branch', 'diff', {'diagnostics', fmt = diagfmt}},
-        lualine_c = {'filename'},
+        lualine_c = {{'filename', path = 1}},
         lualine_x = {'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
