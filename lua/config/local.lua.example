@@ -1,0 +1,65 @@
+return {
+    lsp         = true,
+    treesitter  = true,
+    transparent = false,
+    selection   = 'clipboard',
+    lightscheme = 'dawnfox',
+    darkscheme  = 'nordfox',
+    uselight    = false,
+    langservers = {
+        --cssls = {},
+        --intelephense = {},
+        --sumneko_lua = {},
+        --tsserver = {},
+        --[[
+        clangd = {
+            --cmd = {'clangd', '--query-driver=/mnt/c/msys64/mingw64/bin/clang++.exe'}
+            --cmd = {'clangd', '--query-driver=/usr/bin/clang++'}
+        },
+        --]]
+        --[[
+        psalm = {
+            --cmd = {'/home/.../.config/composer/vendor/bin/psalm-language-server'}
+            --cmd = {'psalm-language-server'}
+            --cmd = {'my/ls/psalm'}
+        },
+        ]]
+        --[[
+        diagnosticls = {
+            filetypes = {'php'},
+            init_options = {
+                filetypes = {
+                    php = {'phpcs'}
+                },
+                linters = {
+                    phpcs = {
+                        command = 'my/ls/phpcs',
+                        sourceName = 'phpcs',
+                        debounce = 300,
+                        rootPatterns = {'composer.lock', 'vendor', '.git'},
+                        args = {'--report=emacs', '-s', '-'},
+                        offsetLine = 0,
+                        offsetColumn = 0,
+                        sourceName = 'phpcs',
+                        formatLines = 1,
+                        formatPattern = {
+                            '^.*:(\\d+):(\\d+):\\s+(.*)\\s+-\\s+(.*)(\\r|\\n)*$',
+                            {
+                                line     = 1,
+                                column   = 2,
+                                message  = 4,
+                                security = 3
+                            }
+                        },
+                        securities = {
+                            error   = 'error',
+                            warning = 'warning',
+                        },
+                        requiredFiles = {'vendor/bin/phpcs'}
+                    },
+                },
+            },
+        }
+        ]]
+    },
+}

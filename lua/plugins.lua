@@ -1,6 +1,6 @@
 require 'helpers'
 
-plugload(function (plug)
+plugLoad(function (plug)
     -- Generic tweaks:
     plug {'nvim-lua/plenary.nvim'}   -- Various tools used by many plugins.
     plug {'adelarsq/vim-matchit'}    -- Better % matching.
@@ -10,6 +10,7 @@ plugload(function (plug)
     plug {'tpope/vim-repeat'}        -- More repeatable commands.
     plug {'tpope/vim-surround'}      -- Surrounding commands.
     plug {'vitalk/vim-shebang'}      -- Infering filetype from shebang.
+    plug {'chrisbra/unicode.vim'}
 
     -- Language support:
     --plug {'sheerun/vim-polyglot'}
@@ -26,6 +27,7 @@ plugload(function (plug)
     -- Visual elements:
     plug {'kyazdani42/nvim-web-devicons'}        -- A lua port of the original devicons.
     --plug {'lukas-reineke/indent-blankline.nvim'} -- Indentation guides.
+    --plug {'edluffy/hologram.nvim'}
 
     -- Search and navigation:
     plug {'nvim-telescope/telescope.nvim'}                          -- An alternative to the original Fzf.
@@ -33,6 +35,7 @@ plugload(function (plug)
     plug {'junegunn/fzf'}                                           -- Core Fzf integration.
     plug {'kyazdani42/nvim-tree.lua'}                               -- A tree file explorer. Replaces netrw.
     plug {'nvim-lualine/lualine.nvim'}                              -- Status line.
+    plug {'simrat39/symbols-outline.nvim'}                          -- Outline.
 
     -- Focus tools:
     plug {'junegunn/limelight.vim'} -- Dimmed surrounding paragraphs.
@@ -40,7 +43,7 @@ plugload(function (plug)
 
     -- Git integration:
     plug {'lewis6991/gitsigns.nvim'} -- Git changes marks.
-    plug {'tpope/vim-fugitive'}      -- Git commands.
+    plug {'tpope/vim-fugitive'}      -- Git commands
 
     -- Color themes:
     plug {'EdenEast/nightfox.nvim',         as = 'nightfox'}
@@ -59,6 +62,6 @@ plugload(function (plug)
     --plug {'gennaro-tedesco/nvim-peekup'}           --> Telescope.
     --plug {'airblade/vim-gitgutter'}                --> GitSigns.
     --plug {'junegunn/fzf.vim'}                      --  The original fzf plugin. Dependency of Vista.
-    --plug {'liuchengxu/vista.vim'}                  --  Not sure if I want to use this.
     --plug {'tpope/vim-ragtag'}                      --  HTML keymaps. Not sure if I need this.
+    --plug {'liuchengxu/vista.vim'}                  --  Outline.
 end)

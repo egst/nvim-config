@@ -1,182 +1,217 @@
 require 'helpers'
 
-local env = require 'env'
+local config = require 'config'
 
 -- Leader:
-nmap('<Space>', '<Leader>')
-xmap('<Space>', '<Leader>')
+map('normal', '<Space>', '<Leader>', {remap = true})
+map('visual', '<Space>', '<Leader>', {remap = true})
 
 -- Escape:
-inoremap('<C-C>', '<Esc>')
+map('input', '<C-C>', '<Esc>')
+
+map('normal', 'S', 'hs')
 
 -- Casing:
-nnoremap('~', '~h')
+map('normal', '~', '~h')
 -- To [U]ppercase
-nnoremap('<Leader>U', 'f_x~h')
+map('normal', '<Leader>U', 'f_x~h')
 -- To [u]nderscore
-nnoremap('<Leader>u', '<S-V>/[A-Z]<Cr><Esc>~hi_<Esc>:noh<Cr>')
+map('normal', '<Leader>u', '<S-V>/[A-Z]<Cr><Esc>~hi_<Esc>:noh<Cr>')
 
 -- Redo:
-nnoremap('U', '<C-R>')
+map('normal', 'U', '<C-R>')
 
 -- Close:
-nnoremap('<Leader>q', ':qa<Cr>')
-nnoremap('<Leader>x', ':Bdelete<Cr>')
-nnoremap('<Leader>c', ':wincmd c<Cr>')
-nnoremap('<Leader>m', ':wincmd x<Cr>')
+map('normal', '<Leader>q', ':qa<Cr>')
+map('normal', '<Leader>Q', ':qa!<Cr>')
+map('normal', '<Leader>x', ':Bdelete<Cr>')
+map('normal', '<Leader>X', ':Bdelete!<Cr>')
+map('normal', '<Leader>c', ':wincmd c<Cr>')
+map('normal', '<Leader>C', ':Bdelete!<Cr>:wincmd c<Cr>')
+map('normal', '<Leader>m', ':wincmd x<Cr>')
 
 -- Save:
-nnoremap('<Leader>w', ':w<Cr>')
-nnoremap('<C-S>',     ':w<Cr>')
+map('normal', '<Leader>w', ':w<Cr>')
 
 -- Windows:
-nnoremap('<Left>',     ':wincmd h<Cr>')
-nnoremap('<Down>',     ':wincmd j<Cr>')
-nnoremap('<Up>',       ':wincmd k<Cr>')
-nnoremap('<Right>',    ':wincmd l<Cr>')
-nnoremap('<Leader>v',  ':wincmd v<Cr>')
-nnoremap('<Leader>V',  ':wincmd s<Cr>')
-nnoremap('<Home>',     ':wincmd <<Cr>')
-nnoremap('<End>',      ':wincmd ><Cr>')
-nnoremap('<PageUp>',   ':wincmd +<Cr>')
-nnoremap('<PageDown>', ':wincmd -<Cr>')
+map('normal', '<Left>',     ':wincmd h<Cr>')
+map('normal', '<Down>',     ':wincmd j<Cr>')
+map('normal', '<Up>',       ':wincmd k<Cr>')
+map('normal', '<Right>',    ':wincmd l<Cr>')
+map('normal', '<Leader>v',  ':wincmd v<Cr>')
+map('normal', '<Leader>V',  ':wincmd s<Cr>')
+map('normal', '<Home>',     ':wincmd <<Cr>')
+map('normal', '<End>',      ':wincmd ><Cr>')
+map('normal', '<PageUp>',   ':wincmd +<Cr>')
+map('normal', '<PageDown>', ':wincmd -<Cr>')
 
 -- Xclip:
-nnoremap('<Leader>y', ':call system(\'xclip -selection ' .. env.selection .. '\', @0)<Cr>')
---nnoremap('<Leader>p', ':r !xclip -o<Cr> -selection ' .. env.selection)
-nnoremap('<Leader>p', ':r !xclip -o<Cr>')
+map('normal', '<Leader>y', ':call system(\'xclip -selection ' .. config.selection .. '\', @0)<Cr>')
+map('normal', '<Leader>p', ':r !xclip -selection ' .. config.selection .. ' -o<Cr>')
+--map('normal', '<Leader>p', ':r !xclip -o<Cr>')
 
 -- Search:
 -- TODO: Avoid the jump.
-nnoremap('*', '*N')
+map('normal', '*', '*N')
 -- no [H]ighlight:
-nnoremap('<Leader>H', ':noh<Cr>')
+map('normal', '<Leader>H', ':noh<Cr>')
 
-nnoremap('<C-L>', '20zl')
-nnoremap('<C-H>', '20zh')
+-- Scroll:
+map('normal', '<C-L>', '20zl')
+map('normal', '<C-H>', '20zh')
+map('normal', '<C-E>', '3<C-E>')
+map('normal', '<C-Y>', '3<C-Y>')
 
 -- Whitespace:
 -- [T]oggle [T]abs & spaces:
-nnoremap('<Leader>T', ':if &expandtab | set noexpandtab | else | set expandtab | endif<Cr>')
+map('normal', '<Leader>T', ':if &expandtab | set noexpandtab | else | set expandtab | endif<Cr>')
 -- [d]elete trailing white[S]pace:
-nnoremap('dS', ':%s/\\s\\+$//e<Cr>')
+map('normal', 'dS', ':%s/\\s\\+$//e<Cr>')
 -- [d]elete [r]epeated space after a "word":
-nnoremap('dr', 'elcw <Esc>')
+map('normal', 'dr', 'elcw <Esc>')
 -- [d]elete [R]epeated space after a "Word":
-nnoremap('dR', 'Elcw <Esc>')
+map('normal', 'dR', 'Elcw <Esc>')
+
+-- Diff:
+-- [d]iff [t]his:
+map('normal', '<Leader>dt', ':diffthis<Cr>')
+-- [d]iff [u]nsaved:
+map('normal', '<Leader>du', ':DiffUnsaved<Cr>')
+-- [d]iff [g]it:
+map('normal', '<Leader>dg', ':Git diff<Cr>')
+-- [d]iff [o]ff:
+map('normal', '<Leader>do', ':diffoff!<Cr>')
 
 -- Settings:
 -- open [s]ettings: n[v]im:
-nnoremap('<Leader>sv', ':e ~/.config/nvim/lua/setup.lua<Cr>')
+map('normal', '<Leader>sv', ':e ~/.config/nvim/lua/setup.lua<Cr>')
 -- open [s]ettings: nvim [k]keymaps:
-nnoremap('<Leader>sk', ':e ~/.config/nvim/lua/keymaps.lua<Cr>')
+map('normal', '<Leader>sk', ':e ~/.config/nvim/lua/keymaps.lua<Cr>')
 -- open [s]ettings: nvim s[n]ippets:
-nnoremap('<Leader>sn', ':e ~/.config/nvim/lua/snippets.lua<Cr>')
+map('normal', '<Leader>sn', ':e ~/.config/nvim/lua/snippets.lua<Cr>')
 -- open [s]ettings: nvim [p]lugins:
-nnoremap('<Leader>sp', ':e ~/.config/nvim/lua/plugins.lua<Cr>')
+map('normal', '<Leader>sp', ':e ~/.config/nvim/lua/plugins.lua<Cr>')
 -- open [s]ettings: nvim [c]onfig:
-nnoremap('<Leader>sc', ':e ~/.config/nvim/lua/config.lua<Cr>')
+map('normal', '<Leader>sc', ':e ~/.config/nvim/lua/config.lua<Cr>')
 -- open [s]ettings: nvim [L]ocal config:
-nnoremap('<Leader>sL', ':e ~/.config/nvim/lua/env.lua<Cr>')
+map('normal', '<Leader>sL', ':e ~/.config/nvim/lua/env.lua<Cr>')
 -- open [s]ettings: [w]indows terminal:
-nnoremap('<Leader>sw', ':e ~/.wt.json<Cr>')
+map('normal', '<Leader>sw', ':e ~/.wt.json<Cr>')
 -- open [s]ettings: [h]yper:
-nnoremap('<Leader>sh', ':e ~/.hyper.js<Cr>')
+map('normal', '<Leader>sh', ':e ~/.hyper.js<Cr>')
 -- open [s]ettings: [t]mux:
-nnoremap('<Leader>st', ':e ~/.tmux.conf<Cr>')
+map('normal', '<Leader>st', ':e ~/.tmux.conf<Cr>')
 -- open [s]ettings: [b]ash:
-nnoremap('<Leader>sb', ':e ~/.bashrc<Cr>')
+map('normal', '<Leader>sb', ':e ~/.bashrc<Cr>')
 -- open [s]ettings: bash [i]nputrc:
-nnoremap('<Leader>si', ':e ~/.inputrc<Cr>')
+map('normal', '<Leader>si', ':e ~/.inputrc<Cr>')
 -- open [s]ettings: bash [a]liases:
-nnoremap('<Leader>sa', ':e ~/.config/bash/aliases<Cr>')
+map('normal', '<Leader>sa', ':e ~/.config/bash/aliases<Cr>')
 -- open [s]ettings: bash [l]ocations:
-nnoremap('<Leader>sl', ':e ~/.config/bash/locations<Cr>')
+map('normal', '<Leader>sl', ':e ~/.config/bash/locations<Cr>')
 -- open [s]ettings: bash path [e]nvironment variable: (TODO: Come up with a better mnemonic.)
-nnoremap('<Leader>se', ':e ~/.config/bash/paths<Cr>')
+map('normal', '<Leader>se', ':e ~/.config/bash/paths<Cr>')
 -- open [s]ettings: [s]tarship:
-nnoremap('<Leader>ss', ':e ~/.config/bash/starship.toml<Cr>')
+map('normal', '<Leader>ss', ':e ~/.config/bash/starship.toml<Cr>')
 -- vim [s]ettings [r]eload:
-nnoremap('<Leader>sr', ':Reload<Cr>:noh<Cr>')
---nnoremap('<Leader>sv', ':e ~/.vimrc<Cr>')
---nnoremap('<Leader>sr', ':source ~/.vimrc<Cr>')
+map('normal', '<Leader>sr', ':Reload<Cr>:noh<Cr>')
+--map('normal', '<Leader>sv', ':e ~/.vimrc<Cr>')
+--map('normal', '<Leader>sr', ':source ~/.vimrc<Cr>')
 
 -- Other:
 -- [R]eorder (sort) lines:
-xnoremap('<Leader>R', ':sort<Cr>')
+map('visual', '<Leader>R', ':sort<Cr>')
 -- Show [C]ursor [C]olumn:
-nnoremap('<Leader>C', ':set cursorcolumn!<Cr>')
+map('normal', '<Leader>L', ':set cursorcolumn!<Cr>')
+
+map('normal', '<Leader>F', ':let @" = expand("%")<Cr>')
 
 -- [Z]en:
-nnoremap('<Leader>Z', ':Goyo<Cr>')
+map('normal', '<Leader>Z', ':Goyo<Cr>')
 -- [z]en:
-nnoremap('<Leader>z', ':Limelight!!<Cr>')
+map('normal', '<Leader>z', ':Limelight!!<Cr>')
 
 -- [a]llign:
-xmap('ga', '<Plug>(EasyAlign)')
+map('visual', '<Leader>a', '<Plug>(EasyAlign)')
 -- [a]llign:
-nmap('ga', '<Plug>(EasyAlign)')
+map('normal', '<Leader>a', '<Plug>(EasyAlign)')
 -- reset [A]llignment:
-xmap('gA', 'ga* ')
+map('visual', '<Leader>A', 'ga* ')
 
 -- [f]ind a [f]ile:
-nnoremap('<Leader>ff', ':Telescope find_files<Cr>')
+map('normal', '<Leader>ff', ':Telescope find_files<Cr>')
 -- [f]ind with [g]rep:
-nnoremap('<Leader>fg', ':Telescope live_grep<Cr>')
+map('normal', '<Leader>fg', ':Telescope live_grep<Cr>')
 -- [f]ind the string under [c]ursor:
-nnoremap('<Leader>fc', ':Telescope grep_string<Cr>')
+map('normal', '<Leader>fc', ':Telescope grep_string<Cr>')
 -- [f]ind [b]uffer:
-nnoremap('<Leader>fb', ':Telescope buffers<Cr>')
+map('normal', '<Leader>fb', ':Telescope buffers<Cr>')
 -- [f]ind [h]elp:
-nnoremap('<Leader>fh', ':Telescope help_tags<Cr>')
--- [f]ind a [s]tring in the current buffer:
-nnoremap('<Leader>fs', ':Telescope current_buffer_fuzzy_find<Cr>')
+map('normal', '<Leader>fh', ':Telescope help_tags<Cr>')
+-- [f]ind a string [l]ocally (in the current buffer):
+map('normal', '<Leader>fl', ':Telescope current_buffer_fuzzy_find<Cr>')
 -- [f]ind a [m]ark:
-nnoremap('<Leader>fm', ':Telescope marks<Cr>')
+map('normal', '<Leader>fm', ':Telescope marks<Cr>')
+-- [f]ind lsp definitions ([s]ource):
+map('normal', '<Leader>fs', ':Telescope lsp_definitions<Cr>')
+-- [f]ind lsp [r]eferences:
+map('normal', '<Leader>fr', ':Telescope lsp_references show_line=false<Cr>')
+-- [f]ind lsp document [o]verview:
+map('normal', '<Leader>fo', ':Telescope lsp_document_symbols<Cr>')
+-- [f]ind lsp workspace [O]verview:
+map('normal', '<Leader>fO', ':Telescope lsp_workspace_symbols<Cr>')
+-- [f]ind lsp document [d]iagnostics:
+map('normal', '<Leader>fd', ':Telescope diagnostics bufnr=0<Cr>')
+-- [f]ind lsp workspace [D]iagnostics:
+map('normal', '<Leader>fD', ':Telescope diagnostics<Cr>')
 
 -- File [t]ree [t]oggle:
-nnoremap('<Leader>tt', ':NvimTreeToggle<Cr>')
+map('normal', '<Leader>tt', ':NvimTreeToggle<Cr>')
 -- File [t]ree [o]pen:
-nnoremap('<Leader>to', ':NvimTreeOpen<Cr>')
+map('normal', '<Leader>to', ':NvimTreeOpen<Cr>')
 -- File [t]ree [c]lose:
-nnoremap('<Leader>tc', ':NvimTreeClose<Cr>')
+map('normal', '<Leader>tc', ':NvimTreeClose<Cr>')
 -- File [t]ree [g]o - focus:
-nnoremap('<Leader>tg', ':NvimTreeFocus<Cr>')
+map('normal', '<Leader>tg', ':NvimTreeFocus<Cr>')
 -- File [t]ree [r]efresh:
-nnoremap('<Leader>tr', ':NvimTreeRefresh<Cr>')
+map('normal', '<Leader>tr', ':NvimTreeRefresh<Cr>')
 -- File [t]ree [f]ind current file:
-nnoremap('<Leader>tf', ':NvimTreeFindFile<Cr>')
+map('normal', '<Leader>tf', ':NvimTreeFindFile<Cr>')
+
+map('normal', '<Leader>oo', ':NvimTreeClose<Cr>:SymbolsOutline<Cr>')
 
 -- [g]it [a]dd [a]ll:
-nnoremap('<Leader>ga', ':Git add --all<Cr>', true)
+map('normal', '<Leader>ga', ':Git add --all<Cr>', {verbose = true})
 -- [g]it [s]tatus:
-nnoremap('<Leader>gs', ':Git status<Cr>', true)
+map('normal', '<Leader>gs', ':Git status<Cr>', {verbose = true})
 -- [g]it [c]ommit:
-nnoremap('<Leader>gc', ':Git commit -m ', true) -- TODO: Fix silent.
+map('normal', '<Leader>gc', ':Git commit -m ', {verbose = true}) -- TODO: Fix silent.
 -- [g]it [p]ush:
-nnoremap('<Leader>gp', ':Git push<Cr>', true)
+map('normal', '<Leader>gp', ':Git push<Cr>', {verbose = true})
 -- [g]it [l]og:
-nnoremap('<Leader>gl', ':Git log --all --decorate --graph <Cr>', true)
+map('normal', '<Leader>gl', ':Git log --all --decorate --graph <Cr>', {verbose = true})
 
--- [e]rror list toggle:
-nnoremap('<Leader>ee', ':TroubleToggle<cr>')
--- [e]rror list for the [w]orkspace:
-nnoremap('<Leader>ew', ':TroubleToggle workspace_diagnostics<cr>')
--- [e]rror list for the current [d]ocument:
-nnoremap('<Leader>ed', ':TroubleToggle document_diagnostics<cr>')
--- [e]rror [q]uickfix list:
-nnoremap('<Leader>eq', ':TroubleToggle quickfix<cr>')
--- [e]rror [l]ocation list:
-nnoremap('<Leader>el', ':TroubleToggle loclist<cr>')
--- [e]rror [r]eference list:
-nnoremap('<Leader>er', ':TroubleToggle lsp_references<cr>')
--- [e]rror - go to the [n]ext one:
-nnoremap('<Leader>en', ':lua vim.diagnostic.goto_next()<cr>')
--- [e]rror - go to the previous [N] one:
-nnoremap('<Leader>eN', ':lua vim.diagnostic.goto_prev()<cr>')
+-- [e]rrors & diagnostics - list toggle:
+map('normal', '<Leader>ee', ':TroubleToggle<cr>')
+-- [e]rrors & diagnostics - list for the [w]orkspace:
+map('normal', '<Leader>ew', ':TroubleToggle workspace_diagnostics<cr>')
+-- [e]rrors & diagnostics - list for the current [d]ocument:
+map('normal', '<Leader>ed', ':TroubleToggle document_diagnostics<cr>')
+-- [e]rrors & diagnostics - [q]uickfix list:
+map('normal', '<Leader>eq', ':TroubleToggle quickfix<cr>')
+-- [e]rrors & diagnostics - [l]ocation list:
+map('normal', '<Leader>el', ':TroubleToggle loclist<cr>')
+-- [e]rrors & diagnostics - [r]eference list:
+map('normal', '<Leader>er', ':TroubleToggle lsp_references<cr>')
+-- [e]rrors & diagnostics - go to the [n]ext one:
+map('normal', '<Leader>en', ':lua vim.diagnostic.goto_next()<cr>')
+-- [e]rrors & diagnostics - go to the previous [N] one:
+map('normal', '<Leader>eN', ':lua vim.diagnostic.goto_prev()<cr>')
 -- [e]rrors & diagnostics - [h]over info:
-nnoremap('<Leader>eh', ':lua vim.lsp.buf.hover()<cr>')
+map('normal', '<Leader>eh', ':lua vim.lsp.buf.hover()<cr>')
 -- [e]rrors & diagnostics - [g]o to definition:
-nnoremap('<Leader>eg', ':lua vim.lsp.buf.definition()<cr>')
+map('normal', '<Leader>eg', ':lua vim.lsp.buf.definition()<cr>')
+-- [e]rrors & diagnostics - [f]ind references:
+map('normal', '<Leader>ef', ':lua vim.lsp.buf.references()<cr>')
 -- [e]rrors & diagnostics - [s]tatus (log):
-nnoremap('<Leader>es', ':e $HOME/.cache/nvim/lsp.log<cr>')
+map('normal', '<Leader>es', ':e $HOME/.cache/nvim/lsp.log<cr>')
