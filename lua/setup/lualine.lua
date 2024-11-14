@@ -1,3 +1,9 @@
+if vim.g.vscode then
+    return
+end
+
+require 'helpers'
+
 local config = require 'config'
 
 local lltheme = {
@@ -32,24 +38,27 @@ local lltheme = {
         c = {bg = config.colors.dark,   fg = config.colors.gray}
     }
 }
-local function compose (f, g)
-    return function (x)
-        g(f(x))
-    end
-end
+
 local function modefmt (mode)
     return config.icons.mode[allLower(mode)] or ' '
 end
-local function trunc (trunc_width, trunc_len, hide_width, no_ellipsis)
+
+local function trunc (trunc_width, trunc_len, hide_width, front, ellipsis)
+    ellipsis = ellipsis or (front and '‹' or '›')
     return function (str)
         local win_width = vim.fn.winwidth(0)
         if hide_width and win_width < hide_width then return ''
         elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
-            return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+            if front then
+                return ellipsis .. str:sub(-trunc_len)
+            else
+                return str:sub(1, trunc_len) .. ellipsis
+            end
         end
         return str
     end
 end
+
 local function diagfmt (status)
     status = status
         :gsub('% ', config.icons.diagnostics.native.error)
@@ -58,6 +67,8 @@ local function diagfmt (status)
         --:gsub('%? ', config.icons.diagnostics.native.info) -- TODO
     return trunc(nil, nil, 70)(status)
 end
+
+-- TODO: Truncate the path with a different symbol at the begining.
 
 require 'lualine'.setup {
     options = {
@@ -72,7 +83,7 @@ require 'lualine'.setup {
     sections = {
         lualine_a = {{'mode', fmt = modefmt}},
         lualine_b = {
-            {'branch',      fmt = trunc(120, 15, 95)},
+            {'branch',      fmt = trunc(120, 10, 95, true)},
             {'diff',        fmt = trunc(nil, nil, 90)},
             {'diagnostics', fmt = diagfmt},
         },

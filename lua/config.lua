@@ -10,11 +10,11 @@ local config = merge(
 
 -- Conditional config tweaks:
 
-if config.uselight then
+if config.useLightScheme then
 else
-    if config.darkscheme == 'duskfox' then
+    if config.darkScheme == 'duskfox' then
         config.colors.dark = '#1f1d2e'
-    elseif config.darkscheme == 'nordfox' then
+    elseif config.darkScheme == 'nordfox' then
         config.colors.dark = '#232831'
     end
 end

@@ -1,29 +1,29 @@
 return {
     lsp        = false,
-    treesitter = false,
+    treeSitter = false,
 
     selection = 'primary',
 
-    lightscheme = 'dawnfox',
-    darkscheme  = 'nordfox',
+    lightScheme    = 'dawnfox',
+    darkScheme     = 'nightfox',
+    useLightScheme = false,
+    transparent    = false,
 
-    lightscheme = 'dawnfox',
-    darkscheme  = 'nightfox',
-    uselight    = false,
-    transparent = false,
-
-    tabwidth  = 4,
+    tabWidth  = 4,
     rulers    = {120},
-    scrolloff = {x = 32, y = 8},
+    scrollOff = {x = 32, y = 8},
 
-    whitespace = {
+    treeWidth    = 40,
+    treePosition = 'right',
+
+    whiteSpace = {
         tab      = ' ━ ',
         trail    = '·',
         extends  = '›',
         precedes = '‹'
     },
 
-    langservers = {},
+    langServers = {},
 
     icons = {
         mode = {
@@ -36,12 +36,6 @@ return {
             command     = ' ',
         },
         diagnostics = {
-            --hint  = ' ',
-            --info  = ' ',
-            --info  = ' ',
-            --warn  = ' ',
-            --warn  = ' ',
-            --error = ' ',
             native = {
                 error = ' ',
                 warn  = ' ',

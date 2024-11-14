@@ -1,31 +1,38 @@
+if vim.g.vscode then
+    return
+end
+
 local config = require 'config'
 
---vim.g.nvim_tree_icons = config.icons.nvimtree
---vim.g.nvim_tree_indent_markers = 1
---vim.g.nvim_tree_icon_padding = '  '
-local treecmd = require 'nvim-tree.config'.nvim_tree_callback
 require 'nvim-tree'.setup {
-    --disable_netrw = false,
-    --hijack_netrw  = true,
     hijack_cursor = true,
+    on_attach = function (buffer)
+        local api = require 'nvim-tree.api'
+        local function opts (description)
+            return {
+                desc    = 'nvim-tree: ' .. description,
+                buffer  = buffer,
+                noremap = true,
+                silent  = true,
+                nowait  = true,
+            }
+        end
+        local noop = function () end
+        api.config.mappings.default_on_attach(buffer)
+        vim.keymap.del('n', '<C-e>', {buffer = buffer})
+        vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts('Change root'))
+    end,
     view = {
         preserve_window_proportions = true,
-        width  = 40,
-        --height = 40,
-        side = 'right',
-        mappings = {
-            list = {
-                {key = 'C', cb = treecmd('cd')},
-                {key = '<C-e>', action = ''},
-            }
-        },
+        width = config.treeWidth,
+        side  = config.treePosition,
     },
     git = {
         ignore = false
     },
     diagnostics = {
         enable = true,
-        icons = config.icons.diagnostics.nvimtree
+        icons  = config.icons.diagnostics.nvimtree
     },
     renderer = {
         indent_markers = {

@@ -1,6 +1,10 @@
+if vim.g.vscode then
+    return
+end
+
 local config = require 'config'
 
-if config.treesitter then
+if config.treeSitter then
     require 'nvim-treesitter.configs'.setup {
         --ensure_installed = 'maintained',
         sync_install     = false,

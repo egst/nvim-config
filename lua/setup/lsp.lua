@@ -1,3 +1,7 @@
+if vim.g.vscode then
+    return
+end
+
 require 'helpers'
 
 local config = require 'config'
@@ -17,9 +21,9 @@ if config.lsp then
             ['<C-U>']     = cmp.mapping(cmp.mapping.scroll_docs(-4),    {'i', 'c'}),
             ['<C-D>']     = cmp.mapping(cmp.mapping.scroll_docs(4),     {'i', 'c'}),
             ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(),         {'i', 'c'}),
-            ['<C-Y>']     = cmp.config.disable, -- TODO: Not sure what's this for.
-            --['<Down>']    = cmp.config.disable,
-            --['<Up>']      = cmp.config.disable,
+            ['<C-Y>']     = cmp.config.disable,
+            ['<Down>']    = cmp.config.disable,
+            ['<Up>']      = cmp.config.disable,
             ['<Cr>']      = cmp.mapping.confirm {select = true},
             ['<C-E>']     = cmp.mapping {
                 i = cmp.mapping.abort(),
@@ -42,12 +46,12 @@ if config.lsp then
     }
 
     local capabilities = require 'cmp_nvim_lsp'.default_capabilities(vim.lsp.protocol.make_client_capabilities())
-    for server, opts in pairs(config.langservers) do
+    for server, opts in pairs(config.langServers) do
         opts.capabilities = capabilities
         require 'lspconfig'[server].setup(opts)
     end
 
-    -- TODO: preview?
+    -- TODO: Show params when typing them.
     vim.cmd [[set completeopt=menuone,noinsert,noselect]]
 
     require 'trouble'.setup {

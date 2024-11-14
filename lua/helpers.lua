@@ -1,3 +1,13 @@
+function compose (f, g)
+    return function (x)
+        g(f(x))
+    end
+end
+
+function anyRootDir ()
+    return vim.fn.getcwd()
+end
+
 function merge (...)
     result = {}
     for _, arg in pairs({...}) do
@@ -54,32 +64,61 @@ end
 
 function map (mode, keys, command, options)
     modes = {
-        normal = 'n',
-        input  = 'i',
-        visual = 'x',
+        normal   = 'n',
+        insert   = 'i',
+        visual   = 'x',
+        operator = 'o',
     }
     defaultOptions = {
-        remap   = false,
-        verbose = false,
+        remap      = false,
+        verbose    = false,
+        repeatable = false,
+        name       = nil,
     }
+    namedMapOptions = {
+        noremap = false,
+    }
+    prefix = 'Eg'
 
     mode = modes[mode] or mode
     options = merge(defaultOptions, options or {})
-    options = {
+    mappingOptions = {
         noremap = not options.remap,
         silent  = not options.verbose,
     }
 
-    --print(mode .. ' ' .. keys .. ' ' .. command)
-    vim.api.nvim_set_keymap(mode, keys, command, options)
+    if options.name then
+        -- First define a <Plug> mapping, then map the specified keys to it.
+        plugMapping = '<Plug>' .. prefix .. '(' .. options.name .. ')'
+        if options.repeatable then
+            plugCommand = command .. [[:silent! call repeat#set("\]] .. plugMapping .. [[", v:count)<Cr>]]
+        else
+            plugCommand = command
+        end
+
+        vim.api.nvim_set_keymap(mode, plugMapping, plugCommand, mappingOptions)
+        vim.api.nvim_set_keymap(mode, keys, plugMapping, merge(mappingOptions, namedMapOptions))
+    else
+        -- Define a mapping with the given keys directly.
+        -- The mapping cannot be repeatable unless a name is given for a <Plug> command.
+        vim.api.nvim_set_keymap(mode, keys, command, mappingOptions)
+    end
 end
 
 function snippet (keys, command)
     map('normal', '<Leader>i' .. keys, command)
 end
 
+function cmd (command)
+    vim.cmd('command! ' .. command)
+end
+
 function autoCmd (event, pattern, command)
     vim.cmd('autocmd ' .. event .. ' ' .. pattern .. ' ' .. command)
+end
+
+function bindCmd (command)
+    return ':' .. command .. '<Cr>'
 end
 
 function lua (code)
@@ -90,10 +129,19 @@ function luaCall (fun, ...)
     return lua(fun .. '(' .. table.concat({...}, ', ') .. ')')
 end
 
-function ftaction (filetype, action)
+function vsCode (fun, ...)
+    return luaCall([[require 'vscode-neovim'.]] .. fun, ...)
+end
+
+function vsCodeCall (fun, ...)
+    return vsCode('call', [[']] .. fun .. [[']], ...)
+end
+
+function fileTypeAction (fileType, action)
     return function (...)
-        if vim.bo.filetype ~= filetype then return end
-        if type(action) == 'function' then
+        if vim.bo.filetype ~= fileType then
+            -- Skip.
+        elseif type(action) == 'function' then
             action(arg)
         else
             vim.cmd(action)
