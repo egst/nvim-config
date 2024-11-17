@@ -1,13 +1,3 @@
-function compose (f, g)
-    return function (x)
-        g(f(x))
-    end
-end
-
-function anyRootDir ()
-    return vim.fn.getcwd()
-end
-
 function merge (...)
     result = {}
     for _, arg in pairs({...}) do
@@ -198,8 +188,4 @@ function setLocal (entry, value)
     else
         return 'setlocal ' .. entry
     end
-end
-
-function cursorChar ()
-    return vim.fn.eval [[matchstr(getline('.'), '\%' . col('.') . 'c.')]]
 end

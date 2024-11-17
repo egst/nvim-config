@@ -18,7 +18,7 @@ map('normal', 'D', 'kdd', {name = 'DeleteAbove',    repeatable = true})
 map('normal', 'Y', 'kyy', {name = 'YankAbove'})
 map('normal', 'C', 'kcc', {name = 'CangeAbove',     repeatable = false})
 
-map('normal', '<Leader>n', bindCmd('exec &rnu == 1 ? "set nornu" : "se rnu"'))
+map('normal', '<Leader>n', bindCmd('exec &rnu == 1 ? "set nornu" : "se rnu"'), {name = 'ToggleNumbers'})
 
 -- Casing:
 map('normal', '~', '~h', {name = 'SwitchCase', repeatable = true})
@@ -91,10 +91,10 @@ map('normal', '<Leader>h', bindCmd('noh'), {name = 'RemoveHighlight'})
 -- Scroll:
 -- TODO: Doesn't work in VSC.
 if not vim.g.vscode then
-    --map('normal', '<C-L>', '20zl',   {name = 'ScrollLeft'})
-    --map('normal', '<C-H>', '20zh',   {name = 'ScrollRight'})
-    --map('normal', '<C-J>', '3<C-E>', {name = 'ScrollDown'})
-    --map('normal', '<C-K>', '3<C-Y>', {name = 'ScrollUp'})
+    map('normal', '<C-L>', '20zl',   {name = 'ScrollLeft'})
+    map('normal', '<C-H>', '20zh',   {name = 'ScrollRight'})
+    map('normal', '<C-J>', '3<C-E>', {name = 'ScrollDown'})
+    map('normal', '<C-K>', '3<C-Y>', {name = 'ScrollUp'})
 end
 
 -- Movement:
@@ -117,9 +117,9 @@ map('operator', '<Leader>J', bindCmd('call NextIndent(1, 1, 1, 1)'),           {
 -- [T]oggle [T]abs & spaces:
 -- TODO: In VSC works but messes up text rendering.
 -- TODO: Consider <Leader>t after removing the <Leader>t mappings for nvim tree.
-map('normal', '<Leader>T', bindCmd('if &expandtab | set noexpandtab | else | set expandtab | endif'))
+map('normal', '<Leader>T', bindCmd('if &expandtab | set noexpandtab | else | set expandtab | endif'), {name = 'ToggleIndent'})
 -- [d]elete trailing white[S]pace:
-map('normal', 'dS', bindCmd('%s/\\s\\+$//e'))
+map('normal', 'dS', bindCmd('%s/\\s\\+$//e'), {name = 'DeleteTrailingWhitepace'})
 -- [d]elete [r]epeated space after a "word":
 map('normal', 'dr', 'elcw <Esc>')
 -- [d]elete [R]epeated space after a "Word":
@@ -129,83 +129,83 @@ map('normal', 'dR', 'Elcw <Esc>')
 -- Diff:
 if not vim.g.vscode then
     -- [d]iff [t]his:
-    map('normal', '<Leader>dt', bindCmd('diffthis'))
+    map('normal', '<Leader>dt', bindCmd('diffthis'), {name = 'DiffThis'})
     -- [d]iff [u]nsaved:
-    map('normal', '<Leader>du', bindCmd('DiffUnsaved'))
+    map('normal', '<Leader>du', bindCmd('DiffUnsaved'), {name = 'DiffUnsaved'})
     -- [d]iff [g]it for this file:
-    map('normal', '<Leader>dg', bindCmd('Git diff %'))
+    map('normal', '<Leader>dg', bindCmd('Git diff %'), {name = 'DiffGit'})
     -- [d]iff [G]it for the whole project:
-    map('normal', '<Leader>dG', bindCmd('Git diff'))
+    map('normal', '<Leader>dG', bindCmd('Git diff'), {name = 'DiffGitProject'})
     -- [d]iff [o]ff:
-    map('normal', '<Leader>do', bindCmd('diffoff!'))
+    map('normal', '<Leader>do', bindCmd('diffoff!'), {name = 'DiffOff'})
 end
 
 -- Settings:
 if not vim.g.vscode then
     -- TODO: Find a better way to do this.
     -- open [s]ettings: n[v]im:
-    map('normal', '<Leader>sv', bindCmd('e ~/.config/nvim/lua/setup.lua'))
+    --map('normal', '<Leader>sv', bindCmd('e ~/.config/nvim/lua/setup.lua'))
     -- open [s]ettings: nvim [k]keymaps:
-    map('normal', '<Leader>sk', bindCmd('e ~/.config/nvim/lua/keymaps.lua'))
+    --map('normal', '<Leader>sk', bindCmd('e ~/.config/nvim/lua/keymaps.lua'))
     -- open [s]ettings: nvim s[n]ippets:
-    map('normal', '<Leader>sn', bindCmd('e ~/.config/nvim/lua/snippets.lua'))
+    --map('normal', '<Leader>sn', bindCmd('e ~/.config/nvim/lua/snippets.lua'))
     -- open [s]ettings: nvim [p]lugins:
-    map('normal', '<Leader>sp', bindCmd('e ~/.config/nvim/lua/plugins.lua'))
+    --map('normal', '<Leader>sp', bindCmd('e ~/.config/nvim/lua/plugins.lua'))
     -- open [s]ettings: nvim [c]onfig:
-    map('normal', '<Leader>sc', bindCmd('e ~/.config/nvim/lua/config.lua'))
+    --map('normal', '<Leader>sc', bindCmd('e ~/.config/nvim/lua/config.lua'))
     -- open [s]ettings: nvim [L]ocal config:
-    map('normal', '<Leader>sL', bindCmd('e ~/.config/nvim/lua/env.lua'))
+    --map('normal', '<Leader>sL', bindCmd('e ~/.config/nvim/lua/env.lua'))
     -- open [s]ettings: [w]indows terminal:
-    map('normal', '<Leader>sw', bindCmd('e ~/.wt.json'))
+    --map('normal', '<Leader>sw', bindCmd('e ~/.wt.json'))
     -- open [s]ettings: [h]yper:
-    map('normal', '<Leader>sh', bindCmd('e ~/.hyper.js'))
+    --map('normal', '<Leader>sh', bindCmd('e ~/.hyper.js'))
     -- open [s]ettings: [t]mux:
-    map('normal', '<Leader>st', bindCmd('e ~/.tmux.conf'))
+    --map('normal', '<Leader>st', bindCmd('e ~/.tmux.conf'))
     -- open [s]ettings: [b]ash:
-    map('normal', '<Leader>sb', bindCmd('e ~/.bashrc'))
+    --map('normal', '<Leader>sb', bindCmd('e ~/.bashrc'))
     -- open [s]ettings: bash [i]nputrc:
-    map('normal', '<Leader>si', bindCmd('e ~/.inputrc'))
+    --map('normal', '<Leader>si', bindCmd('e ~/.inputrc'))
     -- open [s]ettings: bash [a]liases:
-    map('normal', '<Leader>sa', bindCmd('e ~/.config/bash/aliases'))
+    --map('normal', '<Leader>sa', bindCmd('e ~/.config/bash/aliases'))
     -- open [s]ettings: bash [l]ocations:
-    map('normal', '<Leader>sl', bindCmd('e ~/.config/bash/locations'))
+    --map('normal', '<Leader>sl', bindCmd('e ~/.config/bash/locations'))
     -- open [s]ettings: bash path [e]nvironment variable: (TODO: Come up with a better mnemonic.)
-    map('normal', '<Leader>se', bindCmd('e ~/.config/bash/paths'))
+    --map('normal', '<Leader>se', bindCmd('e ~/.config/bash/paths'))
     -- open [s]ettings: [s]tarship:
-    map('normal', '<Leader>ss', bindCmd('e ~/.config/bash/starship.toml'))
+    --map('normal', '<Leader>ss', bindCmd('e ~/.config/bash/starship.toml'))
     --map('normal', '<Leader>sv', bindCmd('e ~/.vimrc'))
     --map('normal', '<Leader>r', bindCmd('source ~/.vimrc'))
     -- vim [s]ettings [r]eload:
-    map('normal', '<Leader>r', bindCmd('Reload<Cr>:noh'))
+    map('normal', '<Leader>r', bindCmd('Reload<Cr>:noh'), {name = 'Reload'})
 end
 
 -- Other:
 -- [R]eorder (sort) lines:
 -- TODO: Consider <Leader>r and <Leader>s instead.
-map('visual', '<Leader>R', bindCmd('sort'))
+map('visual', '<Leader>R', bindCmd('sort'), {name = 'Reorder'})
 -- [S]um:
-map('visual', '<Leader>S', '<Plug>VimSumVisual')
+map('visual', '<Leader>S', '<Plug>VimSumVisual', {name = 'Sum'})
 -- Show [C]ursor [C]olumn:
 -- TODO Doesn't work in VSC.
-map('normal', '<Leader>L', bindCmd('set cursorcolumn!'))
+map('normal', '<Leader>L', bindCmd('set cursorcolumn!'), {name = 'CursorColumn'})
 
 -- Copy [F]ile path:
-map('normal', '<Leader>F', bindCmd('let @" = expand("%")'))
+map('normal', '<Leader>F', bindCmd('let @" = expand("%")'), {name = 'CopyFilePath'})
 
 if not vim.g.vscode then
     -- [Z]en:
-    map('normal', '<Leader>Z', bindCmd('Goyo'))
+    map('normal', '<Leader>Z', bindCmd('Goyo'), {name = 'Zen'})
     -- [z]en:
-    map('normal', '<Leader>z', bindCmd('Limelight!!'))
+    map('normal', '<Leader>z', bindCmd('Limelight!!'), {name = 'ZenLight'})
 end
 
 -- TODO: Maybe silent in VSC?
 -- [a]llign:
-map('visual', 'ga', '<Plug>(EasyAlign)')
+map('visual', 'ga', '<Plug>(EasyAlign)', {name = 'Align'})
 -- [a]llign:
-map('normal', 'ga', '<Plug>(EasyAlign)')
+map('normal', 'ga', '<Plug>(EasyAlign)', {name = 'AlignVisual'})
 -- reset [A]llignment:
-map('visual', 'gA', 'ga* ')
+map('visual', 'gA', 'ga* ', {name = 'ResetAlignment'})
 
 -- TODO:
 --renameFile
@@ -227,51 +227,52 @@ if vim.g.vscode then
 else
     -- [f]ind a [f]ile:
     --map('normal', '<Leader>ff', bindCmd('Telescope find_files'))
-    map('normal', '<Leader>ff', bindCmd('Telescope find_files'))
+    map('normal', '<Leader>ff', bindCmd('Telescope find_files'), {name = 'FindFiles'})
     -- [f]ind with [g]rep:
-    map('normal', '<Leader>fg', bindCmd('Telescope live_grep'))
+    map('normal', '<Leader>fg', bindCmd('Telescope live_grep'), {name = 'FindGrep'})
     -- [f]ind the string under [c]ursor:
-    map('normal', '<Leader>fc', bindCmd('Telescope grep_string'))
+    map('normal', '<Leader>fc', bindCmd('Telescope grep_string'), {name = 'FindUnderCursor'})
     -- [f]ind [b]uffer:
-    map('normal', '<Leader>fb', bindCmd('Telescope buffers'))
+    map('normal', '<Leader>fb', bindCmd('Telescope buffers'), {name = 'FindBuffer'})
     -- [f]ind [h]elp:
-    map('normal', '<Leader>fh', bindCmd('Telescope help_tags'))
+    map('normal', '<Leader>fh', bindCmd('Telescope help_tags'), {name = 'FindHelp'})
     -- [f]ind a string [l]ocally (in the current buffer):
-    map('normal', '<Leader>fl', bindCmd('Telescope current_buffer_fuzzy_find'))
+    map('normal', '<Leader>fl', bindCmd('Telescope current_buffer_fuzzy_find'), {name = 'FindLocal'})
     -- [f]ind a [m]ark:
-    map('normal', '<Leader>fm', bindCmd('Telescope marks'))
-    -- [f]ind lsp definitions ([s]ource):
-    map('normal', '<Leader>fs', bindCmd('Telescope lsp_definitions'))
-    -- [f]ind lsp [r]eferences:
-    map('normal', '<Leader>fr', bindCmd('Telescope lsp_references show_line=false'))
+    map('normal', '<Leader>fm', bindCmd('Telescope marks'), {name = 'FindMark'})
     -- [f]ind lsp document [o]verview:
-    map('normal', '<Leader>fo', bindCmd('Telescope lsp_document_symbols'))
+    map('normal', '<Leader>fo', bindCmd('Telescope lsp_document_symbols'), {name = 'FindSymbols'})
     -- [f]ind lsp workspace [O]verview:
-    map('normal', '<Leader>fO', bindCmd('Telescope lsp_workspace_symbols'))
+    map('normal', '<Leader>fO', bindCmd('Telescope lsp_workspace_symbols'), {name = 'FindSymbolsProject'})
     -- [f]ind lsp document [d]iagnostics:
-    map('normal', '<Leader>fd', bindCmd('Telescope diagnostics bufnr=0'))
+    map('normal', '<Leader>fd', bindCmd('Telescope diagnostics bufnr=0'), {name = 'FindDiagnostics'})
     -- [f]ind lsp workspace [D]iagnostics:
-    map('normal', '<Leader>fD', bindCmd('Telescope diagnostics'))
+    map('normal', '<Leader>fD', bindCmd('Telescope diagnostics'), {name = 'FindDiagnosticsProject'})
     -- TODO
     -- [f]ind custom named [k]eymaps:
-    map('normal', '<Leader>fk', bindCmd('Telescope keymaps lhs_filter=Eg'))
+    map('normal', '<Leader>fk', bindCmd('Telescope keymaps lhs_filter=Eg'), {name = 'FindCustomKeymaps'})
     -- [f]ind all [K]eymaps:
-    map('normal', '<Leader>fk', bindCmd('Telescope keymaps'))
+    map('normal', '<Leader>fk', bindCmd('Telescope keymaps'), {name = 'FindAllKeymaps'})
+
+    -- [f]ind lsp definitions ([s]ource):
+    map('normal', '<Leader>fs', bindCmd('Telescope lsp_definitions'), {name = 'FindSources'})
+    -- [f]ind lsp [r]eferences:
+    map('normal', '<Leader>fr', bindCmd('Telescope lsp_references show_line=false'), {name = 'FindReferences'})
 end
 
 if not vim.g.vscode then
     -- File [t]ree [t]oggle:
-    map('normal', '<Leader>tt', bindCmd('NvimTreeToggle'))
+    map('normal', '<Leader>tt', bindCmd('NvimTreeToggle'), {name = 'TreeToggle'})
     -- File [t]ree [o]pen:
-    map('normal', '<Leader>to', bindCmd('NvimTreeOpen'))
+    map('normal', '<Leader>to', bindCmd('NvimTreeOpen'), {name = 'TreeOpen'})
     -- File [t]ree [c]lose:
-    map('normal', '<Leader>tc', bindCmd('NvimTreeClose'))
+    map('normal', '<Leader>tc', bindCmd('NvimTreeClose'), {name = 'TreeClose'})
     -- File [t]ree [g]o - focus:
-    map('normal', '<Leader>tg', bindCmd('NvimTreeFocus'))
+    map('normal', '<Leader>tg', bindCmd('NvimTreeFocus'), {name = 'TreeFocus'})
     -- File [t]ree [r]efresh:
-    map('normal', '<Leader>tr', bindCmd('NvimTreeRefresh'))
+    map('normal', '<Leader>tr', bindCmd('NvimTreeRefresh'), {name = 'TreeRefresh'})
     -- File [t]ree [f]ind current file:
-    map('normal', '<Leader>tf', bindCmd('NvimTreeFindFile'))
+    map('normal', '<Leader>tf', bindCmd('NvimTreeFindFile'), {name = 'TreeFind'})
 end
 
 -- TODO...
@@ -328,12 +329,19 @@ if vim.g.vscode then
     --map('normal', '<Leader>ld', bindCmd(vsCodeCall('editor.action.revealDefinition')), {name = 'LangDefinition'})
     --map('normal', '<Leader>lr', bindCmd(vsCodeCall('editor.action.goToReferences')), {name = 'LangReferences'})
 else
+    -- TODO: Remove.
     -- [l]anguage analysis - [i]info:
-    map('normal', '<Leader>ls', bindCmd('lua vim.lsp.buf.hover()'), {name = 'LangShow'})
+    map('normal', '<Leader>ls', bindCmd('lua vim.lsp.buf.hover()'))
     -- [l]anguage analysis - [d]efinition:
-    map('normal', '<Leader>ld', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
+    map('normal', '<Leader>ld', bindCmd('lua vim.lsp.buf.definition()'))
     -- [l]anguage analysis - [r]eferences:
-    map('normal', '<Leader>lr', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
+    map('normal', '<Leader>lr', bindCmd('lua vim.lsp.buf.references()'))
+end
+
+if not vim.g.vscode then
+    map('normal', 'gh', bindCmd('lua vim.lsp.buf.hover()'), {name = 'LangHover'})
+    map('normal', 'gd', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
+    map('normal', 'gH', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
 end
 
 -- TODO: This doesn't really work that well. Could this be done with LSP?
