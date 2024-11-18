@@ -66,6 +66,8 @@ plugLoad(function (plug)
         plug {'embark-theme/vim',               as = 'embark'}
         plug {'patstockwell/vim-monokai-tasty', as = 'monokai-tasty'}
         plug {'sonph/onehalf'}
+        plug {'shaunsingh/nord.nvim',           as = 'nord'}
+        plug {'sainnhe/everforest'}
     end
 
     -- Currently unused:

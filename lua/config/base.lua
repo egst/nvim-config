@@ -27,11 +27,11 @@ return {
 
     icons = {
         mode = {
-            normal      = ' ',
-            insert      = ' ',
-            visual      = ' ',
-            ['v-line']  = ' ',
-            ['v-block'] = ' ',
+            normal      = '󰆾 ',
+            insert      = '󱄽 ',
+            visual      = '󰴲 ',
+            ['v-line']  = '󰒉 ',
+            ['v-block'] = '󱟃 ',
             replace     = ' ',
             command     = ' ',
         },
@@ -57,35 +57,35 @@ return {
             }
         },
         completion = { -- Native LSP
-            class         = ' ',
+            class         = ' ',
             color         = ' ',
             constant      = ' ',
             constructor   = ' ',
             enum          = ' ',
-            enumMember    = ' ',
-            field         = ' ',
+            enumMember    = ' ',
+            field         = ' ',
             file          = ' ',
             folder        = ' ',
-            ['function']  = ' ',
-            interface     = ' ',
-            keyword       = ' ',
-            method        = ' ',
-            module        = ' ',
-            property      = 'ﰉ ', -- TODO: This one isn't properly displayed in WT.
+            ['function']  = '󰊕 ',
+            interface     = ' ',
+            keyword       = ' ',
+            method        = '󰊕 ',
+            module        = '󰆧 ',
+            property      = ' ', -- TODO: This one isn't properly displayed in WT.
             snippet       = ' ',
-            struct        = ' ',
+            struct        = ' ',
             text          = ' ',
             unit          = ' ',
-            value         = ' ',
-            variable      = 'ﰊ ', -- TODO: This one isn't properly displayed in WT.
+            value         = ' ',
+            variable      = ' ', -- TODO: This one isn't properly displayed in WT.
             reference     = ' ',
             event         = ' ',
-            operator      = ' ',
-            typeparameter = ' ',
+            operator      = ' ',
+            typeparameter = ' ',
         },
         source = {
             nvim_lsp = 'λ ',
-            buffer   = ' ',
+            buffer   = ' ',
         },
         nvimtree = {
             default = '',

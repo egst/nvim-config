@@ -340,8 +340,10 @@ end
 
 if not vim.g.vscode then
     map('normal', 'gh', bindCmd('lua vim.lsp.buf.hover()'), {name = 'LangHover'})
-    map('normal', 'gd', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
-    map('normal', 'gH', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
+    map('normal', 'gD', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
+    map('normal', 'gd', bindCmd('Telescope lsp_definitions'), {name = 'FindLangDefinition'})
+    map('normal', 'gR', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
+    map('normal', 'gr', bindCmd('Telescope lsp_references show_line=false'), {name = 'FindLangReferences'})
 end
 
 -- TODO: This doesn't really work that well. Could this be done with LSP?

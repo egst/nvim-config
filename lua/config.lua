@@ -16,6 +16,8 @@ else
         config.colors.dark = '#1f1d2e'
     elseif config.darkScheme == 'nordfox' then
         config.colors.dark = '#232831'
+    elseif config.darkScheme == 'everforest' then
+        config.colors.dark = '#1f2329'
     end
 end
 
