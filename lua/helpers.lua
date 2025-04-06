@@ -62,6 +62,8 @@ function map (mode, keys, command, options)
     defaultOptions = {
         remap      = false,
         verbose    = false,
+        wait       = false,
+        expr       = false,
         repeatable = false,
         name       = nil,
     }
@@ -75,6 +77,8 @@ function map (mode, keys, command, options)
     mappingOptions = {
         noremap = not options.remap,
         silent  = not options.verbose,
+        nowait  = not options.wait,
+        expr    = options.expr,
     }
 
     if options.name then
@@ -108,7 +112,7 @@ function autoCmd (event, pattern, command)
 end
 
 function bindCmd (command)
-    return ':' .. command .. '<Cr>'
+    return '<Cmd>' .. command .. '<Cr>'
 end
 
 function lua (code)

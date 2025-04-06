@@ -68,6 +68,33 @@ local function diagfmt (status)
     return trunc(nil, nil, 70)(status)
 end
 
+local function codeium ()
+    status = vim.api.nvim_call_function("codeium#GetStatusString", {})
+    manual = vim.g.codeium_manual
+    mode   = vim.fn.mode()
+    result = nil
+    if mode == 'i' then
+        if status ~= nil and status:match('^%s*$') == nil then
+            result = status
+        end
+    else
+        if not manual then
+            result = ' ON'
+        end
+    end
+    return ' ' .. result
+end
+
+local function copilot ()
+    result = nil
+    if vim.fn['copilot#Enabled']() == 1 then
+        result = ' ON '
+    else
+        result = ' OFF'
+    end
+    return ' ' .. result
+end
+
 -- TODO: Truncate the path with a different symbol at the begining.
 
 require 'lualine'.setup {
@@ -88,7 +115,8 @@ require 'lualine'.setup {
             {'diagnostics', fmt = diagfmt},
         },
         lualine_c = {{'filename', path = 1}},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
+        --lualine_x = {codeium, 'encoding', 'fileformat', 'filetype'},
+        lualine_x = {copilot, 'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
     }

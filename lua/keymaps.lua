@@ -72,8 +72,8 @@ else
     map('normal', '<End>',      bindCmd('wincmd >'), {name = 'WindowGrow'})
     map('normal', '<PageUp>',   bindCmd('wincmd +'), {name = 'WindowShrinkVert'})
     map('normal', '<PageDown>', bindCmd('wincmd -'), {name = 'WindowGrowVert'})
-    --map('normal', '<Leader>v',  bindCmd('wincmd v'), {name = 'WindowSplit'})
-    --map('normal', '<Leader>V',  bindCmd('wincmd s'), {name = 'WindowSplitDown'})
+    map('normal', '<Leader>v',  bindCmd('wincmd v'), {name = 'WindowSplit'})
+    map('normal', '<Leader>V',  bindCmd('wincmd s'), {name = 'WindowSplitDown'})
 end
 
 -- Xclip:
@@ -252,12 +252,14 @@ else
     -- [f]ind custom named [k]eymaps:
     map('normal', '<Leader>fk', bindCmd('Telescope keymaps lhs_filter=Eg'), {name = 'FindCustomKeymaps'})
     -- [f]ind all [K]eymaps:
-    map('normal', '<Leader>fk', bindCmd('Telescope keymaps'), {name = 'FindAllKeymaps'})
+    map('normal', '<Leader>fK', bindCmd('Telescope keymaps'), {name = 'FindAllKeymaps'})
 
     -- [f]ind lsp definitions ([s]ource):
     map('normal', '<Leader>fs', bindCmd('Telescope lsp_definitions'), {name = 'FindSources'})
     -- [f]ind lsp [r]eferences:
     map('normal', '<Leader>fr', bindCmd('Telescope lsp_references show_line=false'), {name = 'FindReferences'})
+
+    map('normal', '<Leader>fd', bindCmd('Telescope commands'), {name = 'FindCommands'})
 end
 
 if not vim.g.vscode then
@@ -287,6 +289,8 @@ if not vim.g.vscode then
     map('normal', '<Leader>gp', bindCmd('Git push'), {verbose = true, name = 'GitPush'})
     -- [g]it [l]og:
     map('normal', '<Leader>gl', bindCmd('Git log --all --decorate --graph '), {verbose = true, name = 'GitLog'})
+    -- [g]it [b]lame:
+    map('normal', '<Leader>gb', bindCmd('Git blame'), {verbose = true, name = 'GitBlame'})
 end
 
 -- TODO: VSC.
@@ -336,14 +340,6 @@ else
     map('normal', '<Leader>ld', bindCmd('lua vim.lsp.buf.definition()'))
     -- [l]anguage analysis - [r]eferences:
     map('normal', '<Leader>lr', bindCmd('lua vim.lsp.buf.references()'))
-end
-
-if not vim.g.vscode then
-    map('normal', 'gh', bindCmd('lua vim.lsp.buf.hover()'), {name = 'LangHover'})
-    map('normal', 'gD', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
-    map('normal', 'gd', bindCmd('Telescope lsp_definitions'), {name = 'FindLangDefinition'})
-    map('normal', 'gR', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
-    map('normal', 'gr', bindCmd('Telescope lsp_references show_line=false'), {name = 'FindLangReferences'})
 end
 
 -- TODO: This doesn't really work that well. Could this be done with LSP?
@@ -427,4 +423,67 @@ if vim.g.vscode then
     -- <Leader>F      | copy file name (TODO: VSC)        |
     -- <C-S-PageUp>   | resize panel up (VSC)             |
     -- <C-S-PageDown> | resize panel down (VSC)           |
+end
+
+if not vim.g.vscode then
+    --vim.g.codeium_disable_bindings = 1
+    --vim.g.codeium_no_map_tab       = true
+    --vim.g.codeium_manual           = true
+
+    --map('normal', '<Leader>a', bindCmd(lua('vim.g.codeium_manual = not vim.g.codeium_manual')), {name = 'CodeiumToggle'})
+    --map('insert', '<C-S>', bindCmd('call codeium#CycleOrComplete()'), {name = 'CodeiumNext'})
+    --map('insert', '<C-V>', bindCmd('call codeium#CycleCompletions(-1)'), {name = 'CodeiumPrev'})
+    --map('insert', '<C-I>', 'codeium#Accept()', {expr = true})
+    --map('insert', '<C-K>', 'codeium#AcceptNextWord()', {expr = true})
+    --map('insert', '<C-L>', 'codeium#AcceptNextLine()', {expr = true})
+    --map('insert', '<C-D>', 'codeium#Clear()', {expr = true})
+
+    -- force  <M-\> <C-S>
+    -- next   <M-]> <C-S>
+    -- prev   <M-[> <C-V>
+    -- accept <Tab> <C-I>
+    -- word   <C-K> <C-K>
+    -- line   <C-L> <C-L>
+    -- clear  <C-]> <C-D>
+
+    vim.g.copilot_no_tab_map = true
+
+    vim.api.nvim_create_user_command('CopilotToggle', function()
+        if vim.fn['copilot#Enabled']() == 1 then
+            vim.cmd 'Copilot disable'
+            print   'Copilot OFF'
+        else
+            vim.cmd 'Copilot enable'
+            print   'Copilot ON'
+        end
+    end, {nargs = 0})
+
+    -- TODO
+    vim.api.nvim_create_user_command('CopilotStart', function()
+        if vim.fn['copilot#Enabled']() == 1 then
+            vim.cmd 'normal! <Plug>(copilot-next)'
+        else
+            vim.cmd 'normal! <Plug>(copilot-suggest)'
+        end
+    end, {nargs = 0})
+
+    map('normal', '<Leader>a', ':CopilotToggle<Cr>', {name = 'CopilotToggle'})
+    map('insert', '<C-S>', '<Plug>(copilot-next)', {name = 'CopilotNext'})
+    --map('insert', '<C-S>', '<C-o>:CopilotStart<Cr>', {name = 'CopilotNext'})
+    map('insert', '<C-V>', '<Plug>(copilot-previous)', {name = 'CopilotPrev'})
+    map('insert', '<C-I>', bindCmd('call copilot#Accept("\\<Cr>")'), {expr = true})
+    map('insert', '<C-K>', '<Plug>(copilot-accept-word)')
+    map('insert', '<C-L>', '<Plug>(copilot-accept-line)')
+    map('insert', '<C-D>', '<Plug>(copilot-dismiss)')
+end
+
+if not vim.g.vscode then
+    map('normal', 'gh', bindCmd('lua vim.lsp.buf.hover()'), {name = 'ErrShow'})
+    map('normal', 'gH', bindCmd('lua vim.diagnostic.open_float(nil, {focus=false})'), {name = 'LangShow'})
+    map('normal', 'gd', bindCmd('Telescope lsp_definitions'), {name = 'FindLangDefinition'})
+    map('normal', 'gD', bindCmd('lua vim.lsp.buf.definition()'), {name = 'LangDefinition'})
+    map('normal', 'gr', bindCmd('Telescope lsp_references show_line=false'), {name = 'FindLangReferences'})
+    map('normal', 'gR', bindCmd('lua vim.lsp.buf.references()'), {name = 'LangReferences'})
+    map('normal', 'gn', bindCmd('lua vim.diagnostic.goto_next()'), {name = 'ErrNext'})
+    map('normal', 'gN', bindCmd('lua vim.diagnostic.goto_prev()'), {name = 'ErrPrev'})
 end

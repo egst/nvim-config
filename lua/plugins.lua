@@ -2,14 +2,14 @@ require 'helpers'
 
 plugLoad(function (plug)
     -- Generic tweaks:
-    plug {'nvim-lua/plenary.nvim'}   -- Various tools used by many plugins.
-    plug {'adelarsq/vim-matchit'}    -- Better % matching.
-    plug {'famiu/nvim-reload'}       -- Reloading lua config.
-    plug {'junegunn/vim-easy-align'} -- Horizontal alignment.
-    plug {'tpope/vim-repeat'}        -- More repeatable commands.
-    plug {'tpope/vim-surround'}      -- Surrounding commands.
-    plug {'grepsuzette/vim-sum'}     -- Numeric selection calculator.
-    plug {'chrisbra/unicode.vim'}    -- TODO: Find out if still useful.
+    plug {'nvim-lua/plenary.nvim', branch = 'master'} -- Various tools used by many plugins.
+    plug {'adelarsq/vim-matchit'}                     -- Better % matching.
+    plug {'famiu/nvim-reload'}                        -- Reloading lua config.
+    plug {'junegunn/vim-easy-align'}                  -- Horizontal alignment.
+    plug {'tpope/vim-repeat'}                         -- More repeatable commands.
+    plug {'tpope/vim-surround'}                       -- Surrounding commands.
+    plug {'grepsuzette/vim-sum'}                      -- Numeric selection calculator.
+    plug {'chrisbra/unicode.vim'}                     -- TODO: Find out if still useful.
 
     if not vim.g.vscode then
         plug {'vitalk/vim-shebang'} -- Infering filetype from shebang.
@@ -21,7 +21,7 @@ plugLoad(function (plug)
         --plug {'sheerun/vim-polyglot'}
         plug {'alvan/vim-closetag'}                                   -- Autoclosing HTML tags.
         plug {'captbaritone/better-indent-support-for-php-with-html'} -- HTML indentation in PHP.
-        --plug {'nvim-treesitter/nvim-treesitter'}                      -- Better syntax highlighting.
+        plug {'nvim-treesitter/nvim-treesitter'}                      -- Better syntax highlighting.
         plug {'neovim/nvim-lspconfig'}                                -- Native LSP.
         plug {'folke/trouble.nvim'}                                   -- Diagnostics for the native LSP.
         plug {'dcampos/nvim-snippy'}                                  -- Snippets. Required for the completion.
@@ -68,6 +68,14 @@ plugLoad(function (plug)
         plug {'sonph/onehalf'}
         plug {'shaunsingh/nord.nvim',           as = 'nord'}
         plug {'sainnhe/everforest'}
+    end
+
+    -- Misc.:
+    if not vim.g.vscode then
+        --plug {'Exafunction/codeium.vim'}
+        plug {'github/copilot.vim'}
+        plug {'CopilotC-Nvim/CopilotChat.nvim'}
+        plug {'echasnovski/mini.animate', branch = 'stable'}
     end
 
     -- Currently unused:

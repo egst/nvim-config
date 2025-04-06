@@ -11,6 +11,7 @@ require 'snippets'
 require 'file-types'
 require 'style'
 require 'commands'
+require 'menu'
 
 local config = require 'config'
 
@@ -58,3 +59,5 @@ require 'setup.lualine'
 require 'setup.nvim-tree'
 require 'setup.telescope'
 --require 'setup.treesitter'
+require 'setup.mini-animate'
+require 'setup.copilot-chat'
